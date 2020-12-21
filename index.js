@@ -21,3 +21,17 @@ client.once('ready', () => {
 
 // login with OAuth2 token
 client.login(token);
+
+// listen for messages
+client.on('message', message => {
+
+	// log entire message to console
+	console.log(message.content);
+
+	// if it contains the the word "ping"
+	if (message.content === '!ping') {
+		
+		// send back "Pong." to the channel the message was sent in
+		message.channel.send('Pong.');
+	}
+});
