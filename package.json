@@ -1,0 +1,23 @@
+{
+  "name": "kato-discordbot",
+  "version": "1.0.0",
+  "description": "A Discord Bot to assist with managing servers and their channels.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/JeffReeves/kato-discordbot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/JeffReeves/kato-discordbot/issues"
+  },
+  "homepage": "https://gitlab.com/JeffReeves/kato-discordbot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  }
+}

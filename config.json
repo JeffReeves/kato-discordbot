@@ -1,0 +1,6 @@
+{
+	"token": "Place_Your_Bots_OAuth2_Token_Here",
+	"command": {
+		"prefix": "!"
+	}
+}
