@@ -14,17 +14,19 @@ const client = new Discord.Client();
 
 // once connection is ready
 client.once('ready', () => {
-	console.log('Ready!');
+	console.debug('[DEBUG] Bot Ready!');
 });
 
 // login with OAuth2 token
-client.login(config.token);
+let token = process.env.token || config.token;
+client.login(token);
+console.debug('[DEBUG] Bot logged in using token');
 
 // listen for messages
 client.on('message', message => {
 
 	// log entire message to console
-	console.log(message.content);
+	console.log('[MESSAGE]', message.content);
 
 	// if it contains the the word "ping"
 	if (message.content === '!ping') {
