@@ -3,10 +3,8 @@ purpose: Discord Bot's main starting file
 author: Jeff Reeves
 */
 
-// OAuth2 Token for the bot
-// TODO:
-//  - reset token after testing
-const token = 'NzkwMzU1OTk0MzY5OTgyNTA0.X9_aYQ.09-zVLJ9s4NxQwR9eUfy3n7_r4I';
+// include config
+const config = require('./config.json');
 
 // include Discord library
 const Discord = require('discord.js');
@@ -20,7 +18,7 @@ client.once('ready', () => {
 });
 
 // login with OAuth2 token
-client.login(token);
+client.login(config.token);
 
 // listen for messages
 client.on('message', message => {
@@ -30,7 +28,7 @@ client.on('message', message => {
 
 	// if it contains the the word "ping"
 	if (message.content === '!ping') {
-		
+
 		// send back "Pong." to the channel the message was sent in
 		message.channel.send('Pong.');
 	}
