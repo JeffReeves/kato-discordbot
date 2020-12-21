@@ -100,7 +100,7 @@ For instructions on how to install and use PM2, please see this guide:
 
 To start the app with PM2:
 ```sh
-pm2 start index.js
+token='<OAuth2_token_goes_here>' pm2 start index.js
 ```
 
 ## LICENSE
