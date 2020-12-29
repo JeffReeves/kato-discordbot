@@ -20,6 +20,8 @@
   },
   "homepage": "https://gitlab.com/JeffReeves/kato-discordbot#readme",
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "discord.js": "^12.5.1",
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0"
   }
 }
