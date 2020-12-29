@@ -6,6 +6,7 @@ author: Jeff Reeves
 // include config
 const config = require('./config.json');
 const PREFIX = config.command.prefix;
+const DB     = config.db.name;
 
 // include Sequelize and Discord
 const Sequelize = require('sequelize');
@@ -19,7 +20,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
-    storage: 'database.sqlite',
+    storage: `${DB}.sqlite`,
 });
 
 // Sequelize table models
