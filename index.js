@@ -67,31 +67,19 @@ client.on('message', async message => {
         const commandArgs = input.join(' ');
 
         // addtag
-        if(command === 'addtag') {
-            const splitArgs = commandArgs.split(' ');
-            const tagName = splitArgs.shift();
-            const tagDescription = splitArgs.join(' ');
+        if(command === 'help') {
+            const helpMessage = `
+                The following values are available:
+                    !tag        <tagname>
+                    !taginfo    <tagname>
+                    !showtags 
+                    !addtag     <tagname> <description>
+                    !edittag    <tagname> <description>
+                    !removetag  <tagname>
+            `;
 
-            try {
-                // equivalent to: 
-                //  INSERT INTO tags (name, description, username) \
-                //  values (?, ?, ?);
-                const tag = await Tags.create({
-                    name: tagName,
-                    description: tagDescription,
-                    username: message.author.username,
-                });
-
-                return message.reply(`Tag ${tag.name} added.`);
-            }
-            catch(e) {
-                if(e.name === 'SequelizeUniqueConstraintError') {
-                    return message.reply('That tag already exists.');
-                }
-
-                return message.reply('Something went wrong with adding a tag.');
-            }
-        } 
+            return message.reply(`[HELP]:\n${helpMessage}`);
+        }
 
         // tag
         else if(command === 'tag') {
@@ -106,29 +94,12 @@ client.on('message', async message => {
                 //  UPDATE tags SET usage_count = usage_count + 1 \ 
                 //  WHERE name = 'tagName';
                 tag.increment('usage_count');
+                
                 return message.channel.send(tag.get('description'));
             }
 
             return message.reply(`Could not find tag: ${tagName}`);
         } 
-        
-        // edittag
-        else if(command === 'edittag') {
-            const splitArgs = commandArgs.split(' ');
-            const tagName = splitArgs.shift();
-            const tagDescription = splitArgs.join(' ');
-
-            // equivalent to: UPDATE tags (description) values (?) WHERE name='?';
-            const affectedRows = await Tags.update({ description: tagDescription }, 
-                                                   { where: { name: tagName }});
-            
-            if(affectedRows > 0) {
-                return message.reply(`Tag ${tagName} was edited.`);
-            }
-
-            return message.reply(`Could not find a tag with name ${tagName}.`);
-        } 
-        
         // taginfo
         else if(command === 'taginfo') {
             const tagName = commandArgs;
@@ -153,6 +124,50 @@ client.on('message', async message => {
             const tagString = tagList.map(t => t.name).join(', ') || 'No tags set.';
 
             return message.channel.send(`List of tags: ${tagString}`);
+        } 
+
+        // addtag
+        else if(command === 'addtag') {
+            const splitArgs = commandArgs.split(' ');
+            const tagName = splitArgs.shift();
+            const tagDescription = splitArgs.join(' ');
+
+            try {
+                // equivalent to: 
+                //  INSERT INTO tags (name, description, username) \
+                //  values (?, ?, ?);
+                const tag = await Tags.create({
+                    name: tagName,
+                    description: tagDescription,
+                    username: message.author.username,
+                });
+
+                return message.reply(`Tag ${tag.name} added.`);
+            }
+            catch(e) {
+                if(e.name === 'SequelizeUniqueConstraintError') {
+                    return message.reply('That tag already exists.');
+                }
+
+                return message.reply('Something went wrong with adding a tag.');
+            }
+        } 
+        
+        // edittag
+        else if(command === 'edittag') {
+            const splitArgs = commandArgs.split(' ');
+            const tagName = splitArgs.shift();
+            const tagDescription = splitArgs.join(' ');
+
+            // equivalent to: UPDATE tags (description) values (?) WHERE name='?';
+            const affectedRows = await Tags.update({ description: tagDescription }, 
+                                                   { where: { name: tagName }});
+            
+            if(affectedRows > 0) {
+                return message.reply(`Tag ${tagName} was edited.`);
+            }
+
+            return message.reply(`Could not find a tag with name ${tagName}.`);
         } 
         
         // removetag
