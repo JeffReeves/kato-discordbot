@@ -78,7 +78,7 @@ client.on('message', async message => {
                                 '!removetag  <tagname>\n'               +
                                 '```';
 
-            return message.reply(`[HELP]: ${helpMessage}`);
+            return message.reply(helpMessage);
         }
 
         // tag
