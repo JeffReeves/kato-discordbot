@@ -68,15 +68,15 @@ client.on('message', async message => {
 
         // addtag
         if(command === 'help') {
-            const helpMessage = 'The following options are available:\n'+
-                                '```\n'                                 +
-                                '!tag        <tagname>\n'               +
-                                '!taginfo    <tagname>\n'               +
-                                '!showtags\n'                           +
-                                '!addtag     <tagname> <description>\n' +
-                                '!edittag    <tagname> <description>\n' +
-                                '!removetag  <tagname>\n'               +
-                                '```';
+            const helpMessage = `The following options are available:
+\`\`\`
+${PREFIX}tag        <tagname>
+${PREFIX}taginfo    <tagname>
+${PREFIX}showtags
+${PREFIX}addtag     <tagname> <description>
+${PREFIX}edittag    <tagname> <description>
+${PREFIX}removetag  <tagname>
+\`\`\``;
 
             return message.reply(helpMessage);
         }
