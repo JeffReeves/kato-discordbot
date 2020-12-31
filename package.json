@@ -4,20 +4,24 @@
   "description": "A Discord Bot to assist with managing servers and their channels.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@gitlab.com/JeffReeves/kato-discordbot.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Jeff Reeves",
+  "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://gitlab.com/JeffReeves/kato-discordbot/issues"
   },
   "homepage": "https://gitlab.com/JeffReeves/kato-discordbot#readme",
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "discord.js": "^12.5.1",
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0"
   }
 }
