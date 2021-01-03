@@ -151,16 +151,16 @@ client.on('message', async message => {
                 archiveEmbed.setURL(URLs[0]);
             }
 
-            // send embed to archive channel
-            archive.send(archiveEmbed);
-
-            // for each URL found, send it as a separate message 
-            //  (so we can generate embeds automatically)
+            // include URLs with the embed (for additional embeds)
             if(URLs){
                 // URLs.forEach(URL => {
                 //     archive.send(URL);
                 // });
-                archive.send(URLs.join('\n'));
+                archive.send(archiveEmbed + '\n' + URLs.join('\n'));
+            }
+            else {
+                // send only the embed to archive channel
+                archive.send(archiveEmbed);
             }
         }
     }
