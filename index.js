@@ -139,10 +139,8 @@ client.on('message', async message => {
             const archiveEmbed = new Discord.MessageEmbed()
                 .setColor(randomColor)
                 .setTitle(abbreviatedTitle)
-                //.setURL(URL)
                 //.setAuthor(author, authorAvatar, URL)
                 .setDescription(content)
-                //.setImage('https://i.imgur.com/wSTFkRM.png')
                 .setTimestamp()
                 .setFooter(`Shared by: ${author}`, authorAvatar);
 
@@ -163,6 +161,7 @@ client.on('message', async message => {
                     // set the thumbnail of the embed to the URL of any image
                     if(attachment.url.match(/.(jpg|jpeg|png|gif|bmp|ico)$/i)){
                         archiveEmbed.setThumbnail(attachment.url);
+                        archiveEmbed.setImage(attachment.url);
                     }
                     else {
 
