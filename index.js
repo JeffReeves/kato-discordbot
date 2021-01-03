@@ -5,7 +5,7 @@ author: Jeff Reeves
 
 // include config
 const config = require('./config.json');
-const PREFIX = config.command.prefix;
+const prefix = config.command.prefix;
 const DB     = config.db.name;
 
 // include Sequelize and Discord
@@ -61,8 +61,8 @@ client.on('message', async message => {
     // log entire message to console
     console.log('[MESSAGE]', message.content);
 
-    if(message.content.startsWith(PREFIX)) {
-        const input = message.content.slice(PREFIX.length).trim().split(' ');
+    if(message.content.startsWith(prefix)) {
+        const input = message.content.slice(prefix.length).trim().split(' ');
         const command = input.shift();
         const commandArgs = input.join(' ');
 
@@ -70,12 +70,12 @@ client.on('message', async message => {
         if(command === 'help') {
             const helpMessage = `The following options are available:
 \`\`\`
-${PREFIX}tag        <tagname>
-${PREFIX}taginfo    <tagname>
-${PREFIX}showtags
-${PREFIX}addtag     <tagname> <description>
-${PREFIX}edittag    <tagname> <description>
-${PREFIX}removetag  <tagname>
+${prefix}tag        <tagname>
+${prefix}taginfo    <tagname>
+${prefix}showtags
+${prefix}addtag     <tagname> <description>
+${prefix}edittag    <tagname> <description>
+${prefix}removetag  <tagname>
 \`\`\``;
 
             return message.reply(helpMessage);
