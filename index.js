@@ -71,15 +71,22 @@ client.on('message', async message => {
         return;
     }
 
-    // verify user is in an admin role (see: config.json)
+    // get guild member details from the author's ID
     const member = message.guild.member(message.author.id);
-    if (member) {
-        // console.log('[DEBUG 3] Guild Member:      ', member);
-        // console.log('[DEBUG 4] Member role cache: ', member.roles.cache);
-        if (member.roles.cache.some(role => role.name.toLowerCase() === adminRole)) {
-            console.log(`[DEBUG] Member is of role "${adminRole}"`);
-        }
+
+    // skip if not a member
+    if(!member) {
+        console.log('[ERROR] Unable to find member in guild');
+        return;
     }
+
+    // verify user is in an admin role (see: config.json)
+    if (member.roles.cache.some(role => role.name.toLowerCase() !== adminRole)) {
+        console.log(`[DEBUG] Member is not in an admin role "${adminRole}"`);
+        return;
+    }
+
+    console.log(`[DEBUG] Member is an admin with the role "${adminRole}"`);
 
     // log entire message to console
     console.log('[DEBUG 1] Message Object: ', message);
