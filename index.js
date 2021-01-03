@@ -5,7 +5,7 @@ author: Jeff Reeves
 
 // include config
 const config        = require('./config.json');
-const adminRole     = config.adminRole.toLowerCase();
+const adminRole     = config.admin.role.toLowerCase();
 const prefix        = config.command.prefix;
 const DB            = config.db.name;
 
@@ -77,6 +77,9 @@ client.on('message', async message => {
 
 //==[SHARE -> ARCHIVE]=================================================================================================
 
+    // TODO:
+    // - Handle copying of uploaded files to archive channel
+
     // if the channel contains 'share' in the name
     const shareSuffix   = '-share';
     const archiveSuffix = '-archive';
@@ -84,6 +87,10 @@ client.on('message', async message => {
 
         // TODO: 
         // - skip here if message contents does not have '#archive' in it
+        if(message.content.indexOf('!share') === -1){
+            console.log('[DEBUG] Post does not have !share');
+            return;
+        }
 
         console.log('[DEBUG] Channel contains "-share" in the name');
         console.log('[DEBUG] Channel: ', message.channel.name);
@@ -92,11 +99,12 @@ client.on('message', async message => {
         const shareChannel   = message.channel.name;
         const archiveChannel = shareChannel.replace(shareSuffix, archiveSuffix);
 
-        // get details of the author
+        // get details of the message and author
+        console.log('[DEBUG] message:', message);
         const content       = message.content.trim();
         const author        = message.author.username;
         const authorAvatar  = message.author.displayAvatarURL();
-        const URL           = message.url;
+        const authorURL     = message.url;
 
         // regex for finding URLs
         var regexURL = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/, 'gi'); // see: http://urlregex.com/
@@ -141,7 +149,7 @@ client.on('message', async message => {
                 .setDescription(content)
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                 .addFields(
-                    { name: '\u200B', value: `[Original Post](${URL})` },
+                    { name: '\u200B', value: `[Original Post](${authorURL})` },
                 )
                 //.setImage('https://i.imgur.com/wSTFkRM.png')
                 .setTimestamp()
