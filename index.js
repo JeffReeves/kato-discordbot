@@ -103,11 +103,15 @@ client.on('message', async message => {
         const archiveChannel = shareChannel.replace(shareSuffix, archiveSuffix);
 
         // get details of the message and author
-        console.log('[DEBUG] message:', message);
         const content       = message.content.trim();
         const author        = message.author.username;
         const authorAvatar  = message.author.displayAvatarURL();
         const authorURL     = message.url;
+        const attachments   = message.attachments;
+
+        if(attachments){
+            console.log('[DEBUG] Message has attachments: ', attachments);
+        }
 
         // regex for finding URLs
         var regexURL = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/, 'gi'); // see: http://urlregex.com/
