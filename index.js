@@ -102,9 +102,9 @@ client.on('message', async message => {
         var regexURL = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/, 'gi'); // see: http://urlregex.com/
 
         // check if any URLs are present in the content, and save them to an array
-        let URLs = [];
+        let URLs = null;
         if(content.match(regexURL)) {
-            URLs.push(content.match(regexURL))
+            URLs = content.match(regexURL);
             console.log('[DEBUG] URLs found in message: ', URLs);
         }
 
