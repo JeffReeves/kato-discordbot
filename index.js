@@ -48,6 +48,7 @@ const Tags = sequelize.define('tags', {
     },
 });
 
+
 // trigger when bot is ready
 client.once('ready', () => {
     console.debug('[DEBUG] Bot Ready!');
@@ -55,6 +56,7 @@ client.once('ready', () => {
     // Sequelize sync Tags table
     Tags.sync({ force: true }) // force clears table
 });
+
 
 // on message received
 client.on('message', async message => {
@@ -64,25 +66,29 @@ client.on('message', async message => {
         return;
     }
 
-    // skip if not in a 'share' channel
-    if(message.channel.name.indexOf('share') === -1){
-        console.log('[DEBUG] Channel does not contain "share" in the name');
-        console.log('[DEBUG] Channel: ', message.channel.name);
-        return;
-    }
-
     // get guild member details from the author's ID
     const member = message.guild.member(message.author.id);
 
     // skip if not a member
     if(!member) {
-        console.log('[ERROR] Unable to find member in guild');
+        console.error('[ERROR] Unable to find member in guild: ', message.author);
         return;
     }
 
+//==[SHARE -> ARCHIVE]=================================================================================================
+
+    // if the channel contains 'share' in the name
+    if(message.channel.name.indexOf('share') !== -1){
+        console.log('[DEBUG] Channel contains "share" in the name');
+        console.log('[DEBUG] Channel: ', message.channel.name);
+    }
+
+
+//==[ADMIN COMMANDS]===================================================================================================
+
     // verify user is in an admin role (see: config.json)
-    if (!member.roles.cache.some(role => role.name.toLowerCase() === adminRole)) {
-        console.log(`[DEBUG] Member is not in an admin role "${adminRole}"`);
+    if(!member.roles.cache.some(role => role.name.toLowerCase() === adminRole)) {
+        console.log(`[DEBUG] Member is not in an admin role "${adminRole}": `, member);
         return;
     }
 
