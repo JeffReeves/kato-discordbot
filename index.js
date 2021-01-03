@@ -4,10 +4,10 @@ author: Jeff Reeves
 */
 
 // include config
-const config    = require('./config.json');
-const adminRole = config.adminRole.toLowerCase();
-const prefix    = config.command.prefix;
-const DB        = config.db.name;
+const config        = require('./config.json');
+const adminRole     = config.adminRole.toLowerCase();
+const prefix        = config.command.prefix;
+const DB            = config.db.name;
 
 // include Sequelize and Discord
 const Sequelize = require('sequelize');
@@ -78,9 +78,33 @@ client.on('message', async message => {
 //==[SHARE -> ARCHIVE]=================================================================================================
 
     // if the channel contains 'share' in the name
-    if(message.channel.name.indexOf('share') !== -1){
-        console.log('[DEBUG] Channel contains "share" in the name');
+    const shareSuffix   = '-share';
+    const archiveSuffix = '-archive';
+    if(message.channel.name.indexOf(shareSuffix) !== -1){
+
+        // TODO: 
+        // - skip here if message contents does not have '#archive' in it
+
+        console.log('[DEBUG] Channel contains "-share" in the name');
         console.log('[DEBUG] Channel: ', message.channel.name);
+
+        // get share and archive channel names
+        const shareChannel   = message.channel.name;
+        const archiveChannel = shareChannel.replace(shareSuffix, archiveSuffix);
+
+        // get details of the author
+        const content   = message.content;
+        const author    = message.author.username;
+        const URL       = message.url;
+
+        // find 'archive' channel based on share channel name
+        const archiveID = message.guild.channels.cache.find(channel => channel.name === archiveChannel).id;
+
+        if(archiveID) {
+            const archive = client.channels.cache.get(archiveID);
+            const archiveMessage = `> ${content}\n\nShared By: ${author} | Original Post: ${URL}`;
+            archive.send(archiveMessage);
+        }
     }
 
 
@@ -95,12 +119,12 @@ client.on('message', async message => {
     console.log(`[DEBUG] Member is an admin with the role "${adminRole}"`);
 
     // log entire message to console
-    console.log('[DEBUG 1] Message Object: ', message);
-    console.log('[DEBUG 2] Content: ', message.content);
-    console.log('[DEBUG 2] Author:  ', message.author);
-    console.log('[DEBUG 2] URL:     ', message.url);
-    console.log('[DEBUG 2] Channel: ', message.channel);
-    console.log('[DEBUG 2] Guild:   ', message.guild);
+    // console.log('[DEBUG 1] Message Object: ', message);
+    // console.log('[DEBUG 2] Content: ', message.content);
+    // console.log('[DEBUG 2] Author:  ', message.author);
+    // console.log('[DEBUG 2] URL:     ', message.url);
+    // console.log('[DEBUG 2] Channel: ', message.channel);
+    // console.log('[DEBUG 2] Guild:   ', message.guild);
 
     // const member = message.mentions.members.first();
     // console.log('[DEBUG] Member: ', member);
