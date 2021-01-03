@@ -104,14 +104,6 @@ client.on('message', async message => {
         const authorURL     = message.url;
         const attachments   = message.attachments;
 
-        if(attachments){
-            console.log('[DEBUG] Message has attachments: ', attachments);
-
-            attachments.forEach((value, key) => {
-                console.log('[DEBUG 1] Attachment: ', value, key)
-            });
-        }
-
         // regex for finding URLs
         var regexURL = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/, 'gi'); // see: http://urlregex.com/
 
@@ -151,12 +143,25 @@ client.on('message', async message => {
                 //.setAuthor(author, authorAvatar, URL)
                 .setDescription(content)
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
-                .addFields(
-                    { name: '\u200B', value: `[Original Post](${authorURL})` },
-                )
+                .addFields({ 
+                        name: '\u200B', value: `[Original Post](${authorURL})` 
+                })
                 //.setImage('https://i.imgur.com/wSTFkRM.png')
                 .setTimestamp()
                 .setFooter(`Shared by: ${author}`, authorAvatar);
+
+            // add fields for each attachment
+            if(attachments){
+                console.log('[DEBUG] Message has attachments: ', attachments);
+    
+                attachments.forEach((attachment, key) => {
+                    console.log('[DEBUG 1] Attachment: ', attachment, key);
+
+                    archiveEmbed.addFields({
+                        name: attachment.name, value: `[Attachment Link](${attachment.url})`, inline: true
+                    });
+                });
+            }
 
             // set URL if one was found
             if(URLs){
