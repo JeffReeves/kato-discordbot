@@ -65,20 +65,19 @@ client.on('message', async message => {
 
     // log entire message to console
     console.log('[DEBUG] Message: ', message.content);
-    console.log('[DEBUG] Author: ', message.author);
+    console.log('[DEBUG] Author:  ', message.author);
+    console.log('[DEBUG] Channel: ', message.channel);
 
-    const member = message.mentions.members.first();
-    console.log('[DEBUG] Member: ', member);
+    // const member = message.mentions.members.first();
+    // console.log('[DEBUG] Member: ', member);
 
-    if (member.roles.cache.some(role => role.name.toLowerCase() !== 'admin')) {
-        console.log('[DEBUG]', 'Member is not in role "admin"');
-    }
+    // if (member.roles.cache.some(role => role.name.toLowerCase() !== 'admin')) {
+    //     console.log('[DEBUG]', 'Member is not in role "admin"');
+    // }
     
-    else if (member.roles.cache.some(role => role.name === 'admin')) {
-        console.log('[DEBUG]', 'Member is an "admin"');
-    }
-
-    console.log('[INFO] Channel: ', message.channel);
+    // else if (member.roles.cache.some(role => role.name === 'admin')) {
+    //     console.log('[DEBUG]', 'Member is an "admin"');
+    // }
 
 //     if(message.content.startsWith(prefix)) {
 //         const input = message.content.slice(prefix.length).trim().split(' ');
