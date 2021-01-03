@@ -103,7 +103,7 @@ client.on('message', async message => {
 
         if(archiveID) {
             const archive = client.channels.cache.get(archiveID);
-            const archiveMessage = `Shared by: @${author}\n[Original Post](${URL})\n\n> ${content}`;
+            const archiveMessage = `Shared By: ${author}\nOriginal Post: ${URL}\n\n>>> ${content}`;
             archive.send(archiveMessage);
 
             // create an embed to share the content with attribution to the user
