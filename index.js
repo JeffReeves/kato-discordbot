@@ -112,15 +112,14 @@ client.on('message', async message => {
                 .setTitle('Share')
                 //.setURL('<url of share>')
                 //.setAuthor(author, authorAvatar, URL)
-                .setDescription(`[Original Post](${URL})`)
+                //.setDescription(`[Original Post](${URL})`)
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                 .addFields(
                     { name: 'Quote', value: content },
                     //{ name: '\u200B', value: '\u200B' },
-                    //{ name: 'Inline field title', value: 'Some value here', inline: true },
+                    { name: '', value: `[Original Post](${URL})`, inline: true },
                     //{ name: 'Inline field title', value: 'Some value here', inline: true },
                 )
-                //.addField('Inline field title', 'Some value here', true)
                 //.setImage('https://i.imgur.com/wSTFkRM.png')
                 .setTimestamp()
                 .setFooter(`Shared by: ${author}`, authorAvatar);
