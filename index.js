@@ -153,7 +153,7 @@ client.on('message', async message => {
 
             // add fields for each attachment
             if(attachments){
-                //console.log('[DEBUG] Message has attachments: ', attachments);
+                console.log('[DEBUG] Message has attachments: ', attachments);
                 attachments.forEach((attachment) => {
                     archiveEmbed.addFields({
                         name: 'Attachment', 
