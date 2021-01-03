@@ -119,16 +119,35 @@ client.on('message', async message => {
             // create embed title from the message content
             let abbreviatedTitle = 'Share'; // default
 
-            // abbreviate the title to the first 60 characters, 
-            //  or the first sentence (whichever is shorter)
-            const periodIndex = content.indexOf('.');
+            // split the content by newlines and other special characters
+            const separators = '/[\n.:;]/';
+            if(content.split(separators)){
+                abbreviatedTitle = content.split(separators)[0];
+            }
+
+            // abbreviate title to less <=60 characters
             const titleLength = 60;
-            if(periodIndex !== -1) {
-                abbreviatedTitle = content.substring(0,periodIndex);
+            if(abbreviatedTitle >= titleLength){
+                abbreviatedTitle = abbreviatedTitle.substring(0,titleLength-3) + '...';
             }
-            if(periodIndex >= titleLength){
-                abbreviatedTitle = content.substring(0,titleLength-3) + '...';
-            }
+
+            // const periodIndex  = content.indexOf('.');
+            // const newlineIndex = content.indexOf('\n');
+            // const colonIndex   = content.indexOf(':');
+
+            // // determine which character comes first
+            // // if a period is present
+            // if(periodIndex !== -1) {
+            //     abbreviatedTitle = content.substring(0,periodIndex);
+            // }
+            // // if the first period is longer than the desired title length
+            // if(periodIndex >= titleLength){
+            //     abbreviatedTitle = content.substring(0,titleLength-3) + '...';
+            // }
+            // // if a newline is present
+            // if(newlineIndex !== -1){
+            //     abbreviatedTitle = content.substring(0,newlineIndex);
+            // }
 
             // create an embed to share the content with attribution to the user
             var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}); // see: https://stackoverflow.com/a/5092872
