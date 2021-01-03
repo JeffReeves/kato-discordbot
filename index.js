@@ -133,7 +133,6 @@ client.on('message', async message => {
 
             // abbreviate title to less <=60 characters
             const titleLength = 60;
-            let abbreviatedTitle = 'Share';
             if(abbreviatedTitle.length >= titleLength){
                 abbreviatedTitle = abbreviatedTitle.substring(0,titleLength-3) + '...';
             }
