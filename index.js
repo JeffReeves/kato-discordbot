@@ -115,10 +115,10 @@ client.on('message', async message => {
             // create embed title from the message content
             let abbreviatedTitle = 'Share'; // default
 
-            // abbreviate the title to the first 25 characters, 
+            // abbreviate the title to the first 50 characters, 
             //  or the first sentence (whichever is shorter)
             const periodIndex = content.indexOf('.');
-            const titleLength = 25;
+            const titleLength = 50;
             if(periodIndex !== -1) {
                 abbreviatedTitle = content.substring(0,periodIndex);
             }
@@ -133,10 +133,10 @@ client.on('message', async message => {
                 .setTitle(abbreviatedTitle)
                 //.setURL('<url of share>')
                 //.setAuthor(author, authorAvatar, URL)
-                //.setDescription(`[Original Post](${URL})`)
+                .setDescription(content)
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                 .addFields(
-                    { name: '\u200B', value: `${content}\n\n[Original Post](${URL})` },
+                    { name: '\u200B', value: `[Original Post](${URL})` },
                     //{ name: '\u200B', value: '\u200B' },
                     //{ name: 'Inline field title', value: 'Some value here', inline: true },
                 )
