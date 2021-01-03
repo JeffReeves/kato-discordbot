@@ -106,6 +106,10 @@ client.on('message', async message => {
 
         if(attachments){
             console.log('[DEBUG] Message has attachments: ', attachments);
+
+            attachments.forEach((value, key) => {
+                console.log('[DEBUG 1] Attachment: ', value, key)
+            });
         }
 
         // regex for finding URLs
