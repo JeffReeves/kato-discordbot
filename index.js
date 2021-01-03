@@ -98,6 +98,17 @@ client.on('message', async message => {
         const authorAvatar  = message.author.displayAvatarURL();
         const URL           = message.url;
 
+        // regex for finding URLs
+        const patternURL = '((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)' // see: http://urlregex.com/
+        var regexURL     = new RegExp(patternURL, 'gi');
+
+        // check if any URLs are present in the content, and save them to an array
+        let URLs = [];
+        if(content.match(regexURL)) {
+            URLs.push(content.match(regexURL))
+            console.log('[DEBUG] URLs found in message: ', URLs);
+        }
+
         // find 'archive' channel based on share channel name
         const archiveID = message.guild.channels.cache.find(channel => channel.name === archiveChannel).id;
 
@@ -115,10 +126,10 @@ client.on('message', async message => {
             // create embed title from the message content
             let abbreviatedTitle = 'Share'; // default
 
-            // abbreviate the title to the first 50 characters, 
+            // abbreviate the title to the first 60 characters, 
             //  or the first sentence (whichever is shorter)
             const periodIndex = content.indexOf('.');
-            const titleLength = 50;
+            const titleLength = 60;
             if(periodIndex !== -1) {
                 abbreviatedTitle = content.substring(0,periodIndex);
             }
@@ -126,12 +137,18 @@ client.on('message', async message => {
                 abbreviatedTitle = content.substring(0,titleLength) + '...';
             }
 
+            // set URL if one was found
+            let contentURL = '\u200B'
+            if(URLs){
+                contentURL = URLs[0];
+            }
+
             // create an embed to share the content with attribution to the user
             var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}); // see: https://stackoverflow.com/a/5092872
             const archiveEmbed = new Discord.MessageEmbed()
                 .setColor(randomColor)
                 .setTitle(abbreviatedTitle)
-                //.setURL('<url of share>')
+                .setURL(contentURL)
                 //.setAuthor(author, authorAvatar, URL)
                 .setDescription(content)
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
