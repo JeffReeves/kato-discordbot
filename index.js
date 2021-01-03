@@ -4,9 +4,10 @@ author: Jeff Reeves
 */
 
 // include config
-const config = require('./config.json');
-const prefix = config.command.prefix;
-const DB     = config.db.name;
+const config    = require('./config.json');
+const adminRole = config.adminRole.toLowerCase();
+const prefix    = config.command.prefix;
+const DB        = config.db.name;
 
 // include Sequelize and Discord
 const Sequelize = require('sequelize');
@@ -74,8 +75,8 @@ client.on('message', async message => {
     if (member) {
         console.log('[DEBUG 3] Guild Member:   ', member);
         console.log('[DEBUG 4] Member role cache: ', member.roles.cache);
-        if (member.roles.cache.some(role => role.name.toLowerCase() === 'admin')) {
-            console.log('[DEBUG 5] Member is of role "admin"');
+        if (member.roles.cache.some(role => role.name.toLowerCase() === adminRole)) {
+            console.log(`[DEBUG 5] Member is of role "${adminRole}"`);
         }
     }
 
