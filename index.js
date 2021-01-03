@@ -154,8 +154,6 @@ client.on('message', async message => {
             // verify there are attachments in the message
             if(attachments){
 
-                console.log('[DEBUG] Message has attachments: ', attachments);
-
                 // general purpose function for human readible file sizes
                 // see: https://stackoverflow.com/a/61505697
                 const hFileSize = function(bytes, si=false){
@@ -175,7 +173,6 @@ client.on('message', async message => {
 
                         // get filesize in human readible format
                         const fileSize = hFileSize(attachment.size);
-                        console.log('[DEBUG] filesize:', fileSize);
 
                         // add a link to each file
                         archiveEmbed.addFields({
