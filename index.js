@@ -160,7 +160,7 @@ client.on('message', async message => {
                 const numURLs = URLs.length;
                 // send each URL as a separate post
                 URLs.forEach((URL, index) => {
-                    archive.send(`[URL ${index + 1}/${numURLs}] ${URL}`);
+                    archive.send(`\`[URL ${index + 1}/${numURLs}]\` ${URL}`);
                 });
                 // to send all URLs in a single post
                 //archive.send(URLs.join('\n'));
