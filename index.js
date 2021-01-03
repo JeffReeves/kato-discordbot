@@ -151,10 +151,20 @@ client.on('message', async message => {
                 .setTimestamp()
                 .setFooter(`Shared by: ${author}`, authorAvatar);
 
-            // add fields for each attachment
+            // verify there are attachments in the message
             if(attachments){
+
                 console.log('[DEBUG] Message has attachments: ', attachments);
+
+                // iterate over each attachment
                 attachments.forEach((attachment) => {
+
+                    // set the thumbnail of the embed to the URL of any image
+                    if(attachment.url.match(/.(jpg|jpeg|png|gif|bmp|ico)$/i)){
+                        archiveEmbed.setThumbnail(attachment.url);
+                    }
+
+                    // add a link to each file
                     archiveEmbed.addFields({
                         name: 'Attachment', 
                         value: `[${attachment.name}](${attachment.url})`, 
