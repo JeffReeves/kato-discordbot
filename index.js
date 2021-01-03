@@ -136,18 +136,14 @@ client.on('message', async message => {
                 abbreviatedTitle = content.substring(0,titleLength) + '...';
             }
 
-            // set URL if one was found
-            let contentURL = '\u200B'
-            if(URLs){
-                contentURL = URLs[0];
-            }
+            
 
             // create an embed to share the content with attribution to the user
             var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}); // see: https://stackoverflow.com/a/5092872
             const archiveEmbed = new Discord.MessageEmbed()
                 .setColor(randomColor)
                 .setTitle(abbreviatedTitle)
-                .setURL(contentURL)
+                //.setURL(URL)
                 //.setAuthor(author, authorAvatar, URL)
                 .setDescription(content)
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
@@ -159,6 +155,11 @@ client.on('message', async message => {
                 //.setImage('https://i.imgur.com/wSTFkRM.png')
                 .setTimestamp()
                 .setFooter(`Shared by: ${author}`, authorAvatar);
+
+            // set URL if one was found
+            if(URLs){
+                archiveEmbed.setURL(URLs[0])
+            }
 
             // send embed to archive channel
             archive.send(archiveEmbed);
