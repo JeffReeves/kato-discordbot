@@ -142,11 +142,6 @@ client.on('message', async message => {
                 //.setURL(URL)
                 //.setAuthor(author, authorAvatar, URL)
                 .setDescription(content)
-                //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
-                .addFields({ 
-                        name: '\u200B', 
-                        value: `[Original Post](${authorURL})` 
-                })
                 //.setImage('https://i.imgur.com/wSTFkRM.png')
                 .setTimestamp()
                 .setFooter(`Shared by: ${author}`, authorAvatar);
@@ -188,6 +183,12 @@ client.on('message', async message => {
             if(URLs){
                 archiveEmbed.setURL(URLs[0]);
             }
+
+            // add link back to original post
+            archiveEmbed.addFields({ 
+                name: '\u200B', 
+                value: `[Original Post](${authorURL})` 
+            });
 
             // send embed of the share
             archive.send(archiveEmbed);
