@@ -115,7 +115,7 @@ client.on('message', async message => {
                 //.setDescription(`[Original Post](${URL})`)
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                 .addFields(
-                    { name: 'Quote', value: `${content}\n\n[Original Post](${URL})` },
+                    { name: '\u200B', value: `${content}\n\n[Original Post](${URL})` },
                     //{ name: '\u200B', value: '\u200B' },
                     //{ name: 'Inline field title', value: 'Some value here', inline: true },
                 )
