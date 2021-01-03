@@ -144,7 +144,8 @@ client.on('message', async message => {
                 .setDescription(content)
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                 .addFields({ 
-                        name: '\u200B', value: `[Original Post](${authorURL})` 
+                        name: '\u200B', 
+                        value: `[Original Post](${authorURL})` 
                 })
                 //.setImage('https://i.imgur.com/wSTFkRM.png')
                 .setTimestamp()
@@ -152,13 +153,12 @@ client.on('message', async message => {
 
             // add fields for each attachment
             if(attachments){
-                console.log('[DEBUG] Message has attachments: ', attachments);
-    
-                attachments.forEach((attachment, key) => {
-                    console.log('[DEBUG 1] Attachment: ', attachment, key);
-
+                //console.log('[DEBUG] Message has attachments: ', attachments);
+                attachments.forEach((attachment) => {
                     archiveEmbed.addFields({
-                        name: attachment.name, value: `[Attachment Link](${attachment.url})`, inline: true
+                        name: 'Attachment', 
+                        value: `[${attachment.name}](${attachment.url})`, 
+                        inline: true
                     });
                 });
             }
