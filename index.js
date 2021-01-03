@@ -156,11 +156,13 @@ client.on('message', async message => {
 
             // create additional embeds for any/all URLs in message content
             if(URLs){
-                URLs.forEach(URL => {
-                    const embedURL = new Discord.MessageEmbed()
-                        .setURL(URL)
-                    archive.send(embedURL);
+                // get total number of URLs
+                const numURLs = URLs.length;
+                // send each URL as a separate post
+                URLs.forEach((URL, index) => {
+                    archive.send(`[URL ${index}/${numURLs}] ${URL}`);
                 });
+                // to send all URLs in a single post
                 //archive.send(URLs.join('\n'));
             }
         }
