@@ -151,16 +151,17 @@ client.on('message', async message => {
                 archiveEmbed.setURL(URLs[0]);
             }
 
-            // include URLs with the embed (for additional embeds)
+            // send embed of the share
+            archive.send(archiveEmbed);
+
+            // create additional embeds for any/all URLs in message content
             if(URLs){
-                // URLs.forEach(URL => {
-                //     archive.send(URL);
-                // });
-                archive.send(archiveEmbed + '\n' + URLs.join('\n'));
-            }
-            else {
-                // send only the embed to archive channel
-                archive.send(archiveEmbed);
+                URLs.forEach(URL => {
+                    const embedURL = new Discord.MessageEmbed()
+                    embedURL.url = URL;
+                    archive.send(embedURL);
+                });
+                //archive.send(URLs.join('\n'));
             }
         }
     }
