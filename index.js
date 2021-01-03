@@ -172,8 +172,7 @@ client.on('message', async message => {
                         // add a link to each file
                         archiveEmbed.addFields({
                             name: 'Attachment', 
-                            value: `[${attachment.name}](${attachment.url}) \`${fileSize}\``, 
-                            inline: true
+                            value: `[${attachment.name}](${attachment.url}) \`${fileSize}\``
                         });
                     }
                 });
