@@ -93,7 +93,7 @@ client.on('message', async message => {
         const archiveChannel = shareChannel.replace(shareSuffix, archiveSuffix);
 
         // get details of the author
-        const content       = message.content;
+        const content       = message.content.trim();
         const author        = message.author.username;
         const authorAvatar  = message.author.displayAvatarURL();
         const URL           = message.url;
@@ -106,11 +106,31 @@ client.on('message', async message => {
             const archiveMessage = `Shared By: ${author}\nOriginal Post: ${URL}\n\n>>> ${content}`;
             archive.send(archiveMessage);
 
+            // TODO:
+            // - strip out any URLs in the content, so they can be posted after
+            //      or used in the imbed's URL, author, description, etc.
+            // - set title to be the first sentence or the first 25 characters 
+            //      (whatever comes first)
+
+            // create embed title from the message content
+            let abbreviatedTitle = 'Share'; // default
+
+            // abbreviate the title to the first 25 characters, 
+            //  or the first sentence (whichever is shorter)
+            const periodIndex = content.indexOf('.');
+            const titleLength = 25;
+            if(periodIndex !== -1) {
+                abbreviatedTitle = content.substring(0,periodIndex);
+            }
+            if(periodIndex >= titleLength){
+                abbreviatedTitle = content.substring(0,titleLength) + '...';
+            }
+
             // create an embed to share the content with attribution to the user
             var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}); // see: https://stackoverflow.com/a/5092872
             const archiveEmbed = new Discord.MessageEmbed()
                 .setColor(randomColor)
-                .setTitle('Share')
+                .setTitle(abbreviatedTitle)
                 //.setURL('<url of share>')
                 //.setAuthor(author, authorAvatar, URL)
                 //.setDescription(`[Original Post](${URL})`)
