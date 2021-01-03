@@ -73,7 +73,13 @@ client.on('message', async message => {
     const member = message.guild.member(message.author.id);
     if (member) {
         console.log('[DEBUG 3] Guild Member:   ', member);
+        console.log('[DEBUG 4] Member role cache: ', member.roles.cache);
+        if (member.roles.cache.some(role => role.name.toLowerCase() === 'admin')) {
+            console.log('[DEBUG 5] Member is of role "admin"');
+        }
     }
+
+    
 
     // const member = message.mentions.members.first();
     // console.log('[DEBUG] Member: ', member);
