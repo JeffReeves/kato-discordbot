@@ -64,6 +64,23 @@ client.on('message', async message => {
         return;
     }
 
+    // skip if not in a 'share' channel
+    if(message.channel.name.indexOf('share') === -1){
+        console.log('[DEBUG] Channel does not contain "share" in the name');
+        console.log('[DEBUG] Channel: ', message.channel.name);
+        return;
+    }
+
+    // verify user is in an admin role (see: config.json)
+    const member = message.guild.member(message.author.id);
+    if (member) {
+        // console.log('[DEBUG 3] Guild Member:      ', member);
+        // console.log('[DEBUG 4] Member role cache: ', member.roles.cache);
+        if (member.roles.cache.some(role => role.name.toLowerCase() === adminRole)) {
+            console.log(`[DEBUG] Member is of role "${adminRole}"`);
+        }
+    }
+
     // log entire message to console
     console.log('[DEBUG 1] Message Object: ', message);
     console.log('[DEBUG 2] Content: ', message.content);
@@ -71,16 +88,6 @@ client.on('message', async message => {
     console.log('[DEBUG 2] URL:     ', message.url);
     console.log('[DEBUG 2] Channel: ', message.channel);
     console.log('[DEBUG 2] Guild:   ', message.guild);
-    const member = message.guild.member(message.author.id);
-    if (member) {
-        console.log('[DEBUG 3] Guild Member:   ', member);
-        console.log('[DEBUG 4] Member role cache: ', member.roles.cache);
-        if (member.roles.cache.some(role => role.name.toLowerCase() === adminRole)) {
-            console.log(`[DEBUG 5] Member is of role "${adminRole}"`);
-        }
-    }
-
-    
 
     // const member = message.mentions.members.first();
     // console.log('[DEBUG] Member: ', member);
