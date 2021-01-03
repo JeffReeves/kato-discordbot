@@ -175,7 +175,7 @@ client.on('message', async message => {
 
                         // get filesize in human readible format
                         const fileSize = hFileSize(attachment.size);
-                        console.log('[DEBUG] filesize:', fleSize);
+                        console.log('[DEBUG] filesize:', fileSize);
 
                         // add a link to each file
                         archiveEmbed.addFields({
