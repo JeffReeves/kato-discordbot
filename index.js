@@ -158,7 +158,7 @@ client.on('message', async message => {
             if(URLs){
                 URLs.forEach(URL => {
                     const embedURL = new Discord.MessageEmbed()
-                    embedURL.url = URL;
+                        .setURL(URL)
                     archive.send(embedURL);
                 });
                 //archive.send(URLs.join('\n'));
