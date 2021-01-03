@@ -69,6 +69,11 @@ client.on('message', async message => {
     console.log('[DEBUG 2] Author:  ', message.author);
     console.log('[DEBUG 2] URL:     ', message.url);
     console.log('[DEBUG 2] Channel: ', message.channel);
+    console.log('[DEBUG 2] Guild:   ', message.guild);
+    const member = message.guild.member(message.author.id);
+    if (member) {
+        console.log('[DEBUG 3] Guild Member:   ', member);
+    }
 
     // const member = message.mentions.members.first();
     // console.log('[DEBUG] Member: ', member);
