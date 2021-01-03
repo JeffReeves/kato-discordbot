@@ -64,9 +64,10 @@ client.on('message', async message => {
     }
 
     // log entire message to console
-    console.log('[DEBUG] Message: ', message.content);
-    console.log('[DEBUG] Author:  ', message.author);
-    console.log('[DEBUG] Channel: ', message.channel);
+    console.log('[DEBUG 1] Message Object: ', message);
+    console.log('[DEBUG 2] Content: ', message.content);
+    console.log('[DEBUG 2] Author:  ', message.author);
+    console.log('[DEBUG 2] Channel: ', message.channel);
 
     // const member = message.mentions.members.first();
     // console.log('[DEBUG] Member: ', member);
