@@ -93,7 +93,7 @@ client.on('message', async message => {
         }
 
         // strip out `!share` from the message
-        message.content.replace('!share', '');
+        message.content = message.content.replace('!share', '');
 
         console.log('[DEBUG] Channel contains "-share" in the name');
         console.log('[DEBUG] Channel: ', message.channel.name);
