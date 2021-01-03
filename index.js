@@ -133,7 +133,7 @@ client.on('message', async message => {
                 abbreviatedTitle = content.substring(0,periodIndex);
             }
             if(periodIndex >= titleLength){
-                abbreviatedTitle = content.substring(0,titleLength) + '...';
+                abbreviatedTitle = content.substring(0,titleLength-3) + '...';
             }
 
             
