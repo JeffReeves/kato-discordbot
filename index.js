@@ -114,8 +114,8 @@ client.on('message', async message => {
 
         if(archiveID) {
             const archive = client.channels.cache.get(archiveID);
-            const archiveMessage = `Shared By: ${author}\nOriginal Post: ${URL}\n\n>>> ${content}`;
-            archive.send(archiveMessage);
+            // const archiveMessage = `Shared By: ${author}\nOriginal Post: ${URL}\n\n>>> ${content}`;
+            // archive.send(archiveMessage);
 
             // TODO:
             // - strip out any URLs in the content, so they can be posted after
