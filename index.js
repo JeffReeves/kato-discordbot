@@ -103,30 +103,30 @@ client.on('message', async message => {
 
         if(archiveID) {
             const archive = client.channels.cache.get(archiveID);
-            const archiveMessage = `> ${content}\n\nShared By: ${author} | [Original Post](${URL})`;
+            const archiveMessage = `Shared by: @${author}\n[Original Post](${URL})\n\n> ${content}`;
             archive.send(archiveMessage);
 
-            // // create an embed to share the content with attribution to the user
-            // const archiveEmbed = new Discord.MessageEmbed()
-            //     .setColor('#0099ff')
-            //     .setTitle('Share')
-            //     .setURL(URL)
-            //     .setAuthor(author, authorAvatar, URL)
-            //     .setDescription(`Share from ${author}`)
-            //     .setThumbnail('https://i.imgur.com/wSTFkRM.png')
-            //     .addFields(
-            //         { name: 'Content', value: content },
-            //         //{ name: '\u200B', value: '\u200B' },
-            //         //{ name: 'Inline field title', value: 'Some value here', inline: true },
-            //         //{ name: 'Inline field title', value: 'Some value here', inline: true },
-            //     )
-            //     //.addField('Inline field title', 'Some value here', true)
-            //     //.setImage('https://i.imgur.com/wSTFkRM.png')
-            //     .setTimestamp()
-            //     .setFooter(`Shared by: ${author}`, authorAvatar);
+            // create an embed to share the content with attribution to the user
+            const archiveEmbed = new Discord.MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle('Share')
+                //.setURL('<url of share>')
+                //.setAuthor(author, authorAvatar, URL)
+                .setDescription(`[Original Post](${URL})`)
+                //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
+                .addFields(
+                    { name: 'Quote', value: content },
+                    //{ name: '\u200B', value: '\u200B' },
+                    //{ name: 'Inline field title', value: 'Some value here', inline: true },
+                    //{ name: 'Inline field title', value: 'Some value here', inline: true },
+                )
+                //.addField('Inline field title', 'Some value here', true)
+                //.setImage('https://i.imgur.com/wSTFkRM.png')
+                .setTimestamp()
+                .setFooter(`Shared by: ${author}`, authorAvatar);
 
-            // // send embed to archive channel
-            // archive.send(archiveEmbed);
+            // send embed to archive channel
+            archive.send(archiveEmbed);
         }
     }
 
