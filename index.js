@@ -78,25 +78,20 @@ client.on('message', async message => {
 //==[SHARE -> ARCHIVE]=================================================================================================
 
     // TODO:
-    // - Handle copying of uploaded files to archive channel
+    // - Handle copying of attachments in share channel over to archive channel
 
     // if the channel contains 'share' in the name
     const shareSuffix   = '-share';
     const archiveSuffix = '-archive';
     if(message.channel.name.indexOf(shareSuffix) !== -1){
 
-        // TODO: 
-        // - skip here if message contents does not have '#archive' in it
+        // skip if the message does not contain '!share' in the message
         if(message.content.indexOf('!share') === -1){
-            console.log('[DEBUG] Post does not have !share');
             return;
         }
 
         // strip out `!share` from the message
         message.content = message.content.replace('!share', '');
-
-        console.log('[DEBUG] Channel contains "-share" in the name');
-        console.log('[DEBUG] Channel: ', message.channel.name);
 
         // get share and archive channel names
         const shareChannel   = message.channel.name;
@@ -120,7 +115,6 @@ client.on('message', async message => {
         let URLs = null;
         if(content.match(regexURL)) {
             URLs = content.match(regexURL);
-            console.log('[DEBUG] URLs found in message: ', URLs);
         }
 
         // find 'archive' channel based on share channel name
@@ -128,8 +122,6 @@ client.on('message', async message => {
 
         if(archiveID) {
             const archive = client.channels.cache.get(archiveID);
-            // const archiveMessage = `Shared By: ${author}\nOriginal Post: ${URL}\n\n>>> ${content}`;
-            // archive.send(archiveMessage);
 
             // create embed title from the message content
             let abbreviatedTitle = 'Share'; // default
