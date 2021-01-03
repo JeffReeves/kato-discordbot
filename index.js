@@ -58,132 +58,151 @@ client.once('ready', () => {
 // on message received
 client.on('message', async message => {
 
-    // log entire message to console
-    console.log('[MESSAGE]', message.content);
-
-    if(message.content.startsWith(prefix)) {
-        const input = message.content.slice(prefix.length).trim().split(' ');
-        const command = input.shift();
-        const commandArgs = input.join(' ');
-
-        // addtag
-        if(command === 'help') {
-            const helpMessage = `The following options are available:
-\`\`\`
-${prefix}tag        <tagname>
-${prefix}taginfo    <tagname>
-${prefix}showtags
-${prefix}addtag     <tagname> <description>
-${prefix}edittag    <tagname> <description>
-${prefix}removetag  <tagname>
-\`\`\``;
-
-            return message.reply(helpMessage);
-        }
-
-        // tag
-        else if(command === 'tag') {
-            const tagName = commandArgs;
-
-            // equivalent to: 
-            //  SELECT * FROM tags WHERE name = 'tagName' LIMIT 1;
-            const tag = await Tags.findOne({ where: { name: tagName } });
-
-            if(tag) {
-                // equivalent to: 
-                //  UPDATE tags SET usage_count = usage_count + 1 \ 
-                //  WHERE name = 'tagName';
-                tag.increment('usage_count');
-                
-                return message.channel.send(tag.get('description'));
-            }
-
-            return message.reply(`Could not find tag: ${tagName}`);
-        } 
-        // taginfo
-        else if(command === 'taginfo') {
-            const tagName = commandArgs;
-
-            // equivalent to: 
-            //  SELECT * FROM tags WHERE name = 'tagName' LIMIT 1;
-            const tag = await Tags.findOne({ where: { name: tagName } });
-
-            if(tag) {
-                return message.channel.send(`${tagName} was created by ${tag.username} at ${tag.createdAt} and has been used ${tag.usage_count} times.`);
-            }
-            
-            return message.reply(`Could not find tag: ${tagName}`);
-        } 
-        
-        // showtags
-        else if(command === 'showtags') {
-            // equivalent to: 
-            //  SELECT name FROM tags;
-            const tagList = await Tags.findAll({ attributes: ['name'] });
-
-            const tagString = tagList.map(t => t.name).join(', ') || 'No tags set.';
-
-            return message.channel.send(`List of tags: ${tagString}`);
-        } 
-
-        // addtag
-        else if(command === 'addtag') {
-            const splitArgs = commandArgs.split(' ');
-            const tagName = splitArgs.shift();
-            const tagDescription = splitArgs.join(' ');
-
-            try {
-                // equivalent to: 
-                //  INSERT INTO tags (name, description, username) \
-                //  values (?, ?, ?);
-                const tag = await Tags.create({
-                    name: tagName,
-                    description: tagDescription,
-                    username: message.author.username,
-                });
-
-                return message.reply(`Tag ${tag.name} added.`);
-            }
-            catch(e) {
-                if(e.name === 'SequelizeUniqueConstraintError') {
-                    return message.reply('That tag already exists.');
-                }
-
-                return message.reply('Something went wrong with adding a tag.');
-            }
-        } 
-        
-        // edittag
-        else if(command === 'edittag') {
-            const splitArgs = commandArgs.split(' ');
-            const tagName = splitArgs.shift();
-            const tagDescription = splitArgs.join(' ');
-
-            // equivalent to: UPDATE tags (description) values (?) WHERE name='?';
-            const affectedRows = await Tags.update({ description: tagDescription }, 
-                                                   { where: { name: tagName }});
-            
-            if(affectedRows > 0) {
-                return message.reply(`Tag ${tagName} was edited.`);
-            }
-
-            return message.reply(`Could not find a tag with name ${tagName}.`);
-        } 
-        
-        // removetag
-        else if (command === 'removetag') {
-            const tagName = commandArgs;
-            // equivalent to: 
-            //  DELETE from tags WHERE name = ?;
-            const rowCount = await Tags.destroy({ where: { name: tagName } });
-
-            if(!rowCount) {
-                return message.reply('That tag did not exist.');
-            }
-
-            return message.reply('Tag deleted.');
-        }
+    // skip if the message's author is a bot
+    if(message.author.bot) {
+        return;
     }
+
+    // log entire message to console
+    console.log('[DEBUG] Message: ', message.content);
+    console.log('[DEBUG] Author: ', message.author);
+
+    const member = message.mentions.members.first();
+    console.log('[DEBUG] Member: ', member);
+
+    if (member.roles.cache.some(role => role.name.toLowerCase() !== 'admin')) {
+        console.log('[DEBUG]', 'Member is not in role "admin"');
+    }
+    
+    else if (member.roles.cache.some(role => role.name === 'admin')) {
+        console.log('[DEBUG]', 'Member is an "admin"');
+    }
+
+    console.log('[INFO] Channel: ', message.channel);
+
+//     if(message.content.startsWith(prefix)) {
+//         const input = message.content.slice(prefix.length).trim().split(' ');
+//         const command = input.shift();
+//         const commandArgs = input.join(' ');
+
+//         // addtag
+//         if(command === 'help') {
+//             const helpMessage = `The following options are available:
+// \`\`\`
+// ${prefix}tag        <tagname>
+// ${prefix}taginfo    <tagname>
+// ${prefix}showtags
+// ${prefix}addtag     <tagname> <description>
+// ${prefix}edittag    <tagname> <description>
+// ${prefix}removetag  <tagname>
+// \`\`\``;
+
+//             return message.reply(helpMessage);
+//         }
+
+//         // tag
+//         else if(command === 'tag') {
+//             const tagName = commandArgs;
+
+//             // equivalent to: 
+//             //  SELECT * FROM tags WHERE name = 'tagName' LIMIT 1;
+//             const tag = await Tags.findOne({ where: { name: tagName } });
+
+//             if(tag) {
+//                 // equivalent to: 
+//                 //  UPDATE tags SET usage_count = usage_count + 1 \ 
+//                 //  WHERE name = 'tagName';
+//                 tag.increment('usage_count');
+                
+//                 return message.channel.send(tag.get('description'));
+//             }
+
+//             return message.reply(`Could not find tag: ${tagName}`);
+//         } 
+//         // taginfo
+//         else if(command === 'taginfo') {
+//             const tagName = commandArgs;
+
+//             // equivalent to: 
+//             //  SELECT * FROM tags WHERE name = 'tagName' LIMIT 1;
+//             const tag = await Tags.findOne({ where: { name: tagName } });
+
+//             if(tag) {
+//                 return message.channel.send(`${tagName} was created by ${tag.username} at ${tag.createdAt} and has been used ${tag.usage_count} times.`);
+//             }
+            
+//             return message.reply(`Could not find tag: ${tagName}`);
+//         } 
+        
+//         // showtags
+//         else if(command === 'showtags') {
+//             // equivalent to: 
+//             //  SELECT name FROM tags;
+//             const tagList = await Tags.findAll({ attributes: ['name'] });
+
+//             const tagString = tagList.map(t => t.name).join(', ') || 'No tags set.';
+
+//             return message.channel.send(`List of tags: ${tagString}`);
+//         } 
+
+//         // addtag
+//         else if(command === 'addtag') {
+//             const splitArgs = commandArgs.split(' ');
+//             const tagName = splitArgs.shift();
+//             const tagDescription = splitArgs.join(' ');
+
+//             try {
+//                 // equivalent to: 
+//                 //  INSERT INTO tags (name, description, username) \
+//                 //  values (?, ?, ?);
+//                 const tag = await Tags.create({
+//                     name: tagName,
+//                     description: tagDescription,
+//                     username: message.author.username,
+//                 });
+
+//                 return message.reply(`Tag ${tag.name} added.`);
+//             }
+//             catch(e) {
+//                 if(e.name === 'SequelizeUniqueConstraintError') {
+//                     return message.reply('That tag already exists.');
+//                 }
+
+//                 return message.reply('Something went wrong with adding a tag.');
+//             }
+//         } 
+        
+//         // edittag
+//         else if(command === 'edittag') {
+//             const splitArgs = commandArgs.split(' ');
+//             const tagName = splitArgs.shift();
+//             const tagDescription = splitArgs.join(' ');
+
+//             // equivalent to: UPDATE tags (description) values (?) WHERE name='?';
+//             const affectedRows = await Tags.update({ description: tagDescription }, 
+//                                                    { where: { name: tagName }});
+            
+//             if(affectedRows > 0) {
+//                 return message.reply(`Tag ${tagName} was edited.`);
+//             }
+
+//             return message.reply(`Could not find a tag with name ${tagName}.`);
+//         } 
+        
+//         // removetag
+//         else if (command === 'removetag') {
+//             const tagName = commandArgs;
+//             // equivalent to: 
+//             //  DELETE from tags WHERE name = ?;
+//             const rowCount = await Tags.destroy({ where: { name: tagName } });
+
+//             if(!rowCount) {
+//                 return message.reply('That tag did not exist.');
+//             }
+
+//             return message.reply('Tag deleted.');
+//         }
+//     }
 });
 
 // login with OAuth2 token
