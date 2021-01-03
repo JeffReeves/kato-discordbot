@@ -122,14 +122,16 @@ client.on('message', async message => {
             // create embed title from the message content
             let abbreviatedTitle = 'Share'; // default
 
-            // split the content by newlines and other special characters
-            const separators = new RegExp('[\n.:;]');
-            if(content.split(separators)){
-                abbreviatedTitle = content.split(separators)[0];
-            }
+            // disabling for now, since it chokes on URLs being first
+            //  i.e. https://youtube.com/v?=12345 -> https
+            // // split the content by newlines and other special characters
+            // const separators = new RegExp('[\n.:;]');
+            // if(content.split(separators)){
+            //     abbreviatedTitle = content.split(separators)[0];
+            // }
 
-            // remove any double space left by removing !share
-            abbreviatedTitle = abbreviatedTitle.replace('  ', ' ');
+            // // remove any double space left by removing !share
+            // abbreviatedTitle = abbreviatedTitle.replace('  ', ' ');
 
             // abbreviate title to less <=60 characters
             const titleLength = 60;
@@ -142,7 +144,7 @@ client.on('message', async message => {
             const archiveEmbed = new Discord.MessageEmbed()
                 .setColor(randomColor)
                 .setTitle(abbreviatedTitle)
-                //.setAuthor(author, authorAvatar, URL)
+                .setAuthor(author, authorAvatar)
                 .setDescription(content)
                 .setTimestamp()
                 .setFooter(`Shared by: ${author}`, authorAvatar);
