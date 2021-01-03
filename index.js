@@ -81,7 +81,7 @@ client.on('message', async message => {
     }
 
     // verify user is in an admin role (see: config.json)
-    if (member.roles.cache.some(role => role.name.toLowerCase() !== adminRole)) {
+    if (!member.roles.cache.some(role => role.name.toLowerCase() === adminRole)) {
         console.log(`[DEBUG] Member is not in an admin role "${adminRole}"`);
         return;
     }
