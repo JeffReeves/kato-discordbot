@@ -55,14 +55,6 @@ client.once('ready', () => {
 
     // Sequelize sync Tags table
     Tags.sync({ force: true }) // force clears table
-
-    // general purpose function for human readible file sizes
-    // see: https://stackoverflow.com/a/61505697
-    var hFileSize = function(bytes, si=false) {
-        let u, b=bytes, t= si ? 1000 : 1024;     
-        ['', si?'k':'K', ...'MGTPEZY'].find(x=> (u=x, b/=t, b**2<1));
-        return `${u ? (t*b).toFixed(1) : bytes} ${u}${!si && u ? 'i':''}B`;    
-      }
 });
 
 
@@ -172,6 +164,14 @@ client.on('message', async message => {
                         archiveEmbed.setThumbnail(attachment.url);
                     }
                     else {
+
+                        // general purpose function for human readible file sizes
+                        // see: https://stackoverflow.com/a/61505697
+                        const hFileSize = function(bytes, si=false){
+                            let u, b=bytes, t= si ? 1000 : 1024;     
+                            ['', si?'k':'K', ...'MGTPEZY'].find(x=> (u=x, b/=t, b**2<1));
+                            return `${u ? (t*b).toFixed(1) : bytes} ${u}${!si && u ? 'i':''}B`;    
+                        };
 
                         // get filesize in human readible format
                         const fileSize = hFileSize(attachment.size);
