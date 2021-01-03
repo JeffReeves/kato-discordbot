@@ -131,24 +131,6 @@ client.on('message', async message => {
                 abbreviatedTitle = abbreviatedTitle.substring(0,titleLength-3) + '...';
             }
 
-            // const periodIndex  = content.indexOf('.');
-            // const newlineIndex = content.indexOf('\n');
-            // const colonIndex   = content.indexOf(':');
-
-            // // determine which character comes first
-            // // if a period is present
-            // if(periodIndex !== -1) {
-            //     abbreviatedTitle = content.substring(0,periodIndex);
-            // }
-            // // if the first period is longer than the desired title length
-            // if(periodIndex >= titleLength){
-            //     abbreviatedTitle = content.substring(0,titleLength-3) + '...';
-            // }
-            // // if a newline is present
-            // if(newlineIndex !== -1){
-            //     abbreviatedTitle = content.substring(0,newlineIndex);
-            // }
-
             // create an embed to share the content with attribution to the user
             var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}); // see: https://stackoverflow.com/a/5092872
             const archiveEmbed = new Discord.MessageEmbed()
