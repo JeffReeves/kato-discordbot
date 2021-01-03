@@ -149,7 +149,6 @@ client.on('message', async message => {
             // set URL if one was found
             if(URLs){
                 archiveEmbed.setURL(URLs[0]);
-                archiveEmbed.setThumbnail(URLs[0]);
             }
 
             // send embed to archive channel
@@ -158,9 +157,10 @@ client.on('message', async message => {
             // for each URL found, send it as a separate message 
             //  (so we can generate embeds automatically)
             if(URLs){
-                URLs.forEach(URL => {
-                    archive.send(URL);
-                });
+                // URLs.forEach(URL => {
+                //     archive.send(URL);
+                // });
+                archive.send(URLs.join('\n'));
             }
         }
     }
