@@ -77,6 +77,9 @@ client.on('message', async message => {
 
 //==[SHARE -> ARCHIVE]=================================================================================================
 
+    // TODO:
+    // - Handle copying of attachments in share channel over to archive channel
+
     // if the channel contains 'share' in the name
     const shareSuffix   = '-share';
     const archiveSuffix = '-archive';
@@ -136,8 +139,10 @@ client.on('message', async message => {
             const archiveEmbed = new Discord.MessageEmbed()
                 .setColor(randomColor)
                 .setTitle(abbreviatedTitle)
-                //.setAuthor(author, authorAvatar, authorURL)
+                //.setURL(URL)
+                //.setAuthor(author, authorAvatar, URL)
                 .setDescription(content)
+                //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                 .addFields({ 
                         name: '\u200B', 
                         value: `[Original Post](${authorURL})` 
@@ -172,7 +177,7 @@ client.on('message', async message => {
                         // add a link to each file
                         archiveEmbed.addFields({
                             name: 'Attachment', 
-                            value: `[${attachment.name}](${attachment.url})\n\`${fileSize}\``, 
+                            value: `[${attachment.name}](${attachment.url}) \`${fileSize}\``, 
                             inline: true
                         });
                     }
@@ -189,10 +194,8 @@ client.on('message', async message => {
 
             // create additional embeds for any/all URLs in message content
             if(URLs){
-
                 // get total number of URLs
                 const numURLs = URLs.length;
-
                 // send each URL as a separate post
                 URLs.forEach((URL, index) => {
                     archive.send(`\`[URL ${index + 1}/${numURLs}]\` ${URL}`);
