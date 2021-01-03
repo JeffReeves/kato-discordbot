@@ -116,12 +116,6 @@ client.on('message', async message => {
             // const archiveMessage = `Shared By: ${author}\nOriginal Post: ${URL}\n\n>>> ${content}`;
             // archive.send(archiveMessage);
 
-            // TODO:
-            // - strip out any URLs in the content, so they can be posted after
-            //      or used in the imbed's URL, author, description, etc.
-            // - set title to be the first sentence or the first 25 characters 
-            //      (whatever comes first)
-
             // create embed title from the message content
             let abbreviatedTitle = 'Share'; // default
 
@@ -136,8 +130,6 @@ client.on('message', async message => {
                 abbreviatedTitle = content.substring(0,titleLength-3) + '...';
             }
 
-            
-
             // create an embed to share the content with attribution to the user
             var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}); // see: https://stackoverflow.com/a/5092872
             const archiveEmbed = new Discord.MessageEmbed()
@@ -149,8 +141,6 @@ client.on('message', async message => {
                 //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                 .addFields(
                     { name: '\u200B', value: `[Original Post](${URL})` },
-                    //{ name: '\u200B', value: '\u200B' },
-                    //{ name: 'Inline field title', value: 'Some value here', inline: true },
                 )
                 //.setImage('https://i.imgur.com/wSTFkRM.png')
                 .setTimestamp()
@@ -163,6 +153,12 @@ client.on('message', async message => {
 
             // send embed to archive channel
             archive.send(archiveEmbed);
+
+            // for each URL found, send it as a separate message 
+            //  (so we can generate embeds automatically)
+            URLs.forEach(URL => {
+                archive.send(URL);
+            });
         }
     }
 
