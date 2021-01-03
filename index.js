@@ -120,9 +120,9 @@ client.on('message', async message => {
             let abbreviatedTitle = 'Share'; // default
 
             // split the content by newlines and other special characters
-            //const separators = '/[\n.:;]/';
-            if(content.split(/[\n.:;]/)){
-                abbreviatedTitle = content.split(/[\n.:;]/)[0];
+            const separators = new RegExp('[\n.:;]');
+            if(content.split(separators)){
+                abbreviatedTitle = content.split(separators)[0];
             }
 
             // abbreviate title to less <=60 characters
