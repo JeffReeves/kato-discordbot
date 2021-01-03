@@ -156,6 +156,14 @@ client.on('message', async message => {
 
                 console.log('[DEBUG] Message has attachments: ', attachments);
 
+                // general purpose function for human readible file sizes
+                // see: https://stackoverflow.com/a/61505697
+                const hFileSize = function(bytes, si=false){
+                    let u, b=bytes, t= si ? 1000 : 1024;     
+                    ['', si?'k':'K', ...'MGTPEZY'].find(x=> (u=x, b/=t, b**2<1));
+                    return `${u ? (t*b).toFixed(1) : bytes} ${u}${!si && u ? 'i':''}B`;    
+                };
+
                 // iterate over each attachment
                 attachments.forEach((attachment) => {
 
@@ -165,14 +173,6 @@ client.on('message', async message => {
                     }
                     else {
 
-                        // general purpose function for human readible file sizes
-                        // see: https://stackoverflow.com/a/61505697
-                        const hFileSize = function(bytes, si=false){
-                            let u, b=bytes, t= si ? 1000 : 1024;     
-                            ['', si?'k':'K', ...'MGTPEZY'].find(x=> (u=x, b/=t, b**2<1));
-                            return `${u ? (t*b).toFixed(1) : bytes} ${u}${!si && u ? 'i':''}B`;    
-                        };
-
                         // get filesize in human readible format
                         const fileSize = hFileSize(attachment.size);
                         console.log('[DEBUG] filesize:', fileSize);
@@ -180,7 +180,7 @@ client.on('message', async message => {
                         // add a link to each file
                         archiveEmbed.addFields({
                             name: 'Attachment', 
-                            value: `[${attachment.name}](${attachment.url}) \`size: ${fileSize}\``, 
+                            value: `[${attachment.name}](${attachment.url}) \`${fileSize}\``, 
                             inline: true
                         });
                     }
