@@ -160,16 +160,19 @@ client.on('message', async message => {
                 attachments.forEach((attachment) => {
 
                     // set the thumbnail of the embed to the URL of any image
-                    if(attachment.url.match(/.(jpg|jpeg|png|gif|bmp|ico)$/i)){
+                    if(attachment.url.match(/.(jpg|jpeg|png|gif|bmp|ico|zip)$/i)){
                         archiveEmbed.setThumbnail(attachment.url);
                     }
+                    //else{
+                        // add a link to each file
+                        archiveEmbed.addFields({
+                            name: 'Attachment', 
+                            value: `[${attachment.name}](${attachment.url})`, 
+                            inline: true
+                        });
+                    //}
 
-                    // add a link to each file
-                    archiveEmbed.addFields({
-                        name: 'Attachment', 
-                        value: `[${attachment.name}](${attachment.url})`, 
-                        inline: true
-                    });
+
                 });
             }
 
