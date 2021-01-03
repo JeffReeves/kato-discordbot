@@ -93,17 +93,40 @@ client.on('message', async message => {
         const archiveChannel = shareChannel.replace(shareSuffix, archiveSuffix);
 
         // get details of the author
-        const content   = message.content;
-        const author    = message.author.username;
-        const URL       = message.url;
+        const content       = message.content;
+        const author        = message.author.username;
+        const authorAvatar  = message.author.displayAvatarURL();
+        const URL           = message.url;
 
         // find 'archive' channel based on share channel name
         const archiveID = message.guild.channels.cache.find(channel => channel.name === archiveChannel).id;
 
         if(archiveID) {
             const archive = client.channels.cache.get(archiveID);
-            const archiveMessage = `> ${content}\n\nShared By: ${author} | Original Post: ${URL}`;
-            archive.send(archiveMessage);
+            //const archiveMessage = `> ${content}\n\nShared By: ${author} | Original Post: ${URL}`;
+            //archive.send(archiveMessage);
+
+            // create an embed to share the content with attribution to the user
+            const archiveEmbed = new Discord.MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle('Share')
+                .setURL(URL)
+                .setAuthor(author, authorAvatar, URL)
+                .setDescription(`Share from ${author}`)
+                .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+                .addFields(
+                    { name: 'Content', value: content },
+                    //{ name: '\u200B', value: '\u200B' },
+                    //{ name: 'Inline field title', value: 'Some value here', inline: true },
+                    //{ name: 'Inline field title', value: 'Some value here', inline: true },
+                )
+                //.addField('Inline field title', 'Some value here', true)
+                //.setImage('https://i.imgur.com/wSTFkRM.png')
+                .setTimestamp()
+                .setFooter(`Shared by: ${author}`, authorAvatar);
+
+            // send embed to archive channel
+            archive.send(archiveEmbed);
         }
     }
 
