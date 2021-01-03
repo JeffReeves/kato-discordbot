@@ -128,6 +128,9 @@ client.on('message', async message => {
                 abbreviatedTitle = content.split(separators)[0];
             }
 
+            // remove any double space left by removing !share
+            abbreviatedTitle = abbreviatedTitle.replace('  ', ' ');
+
             // abbreviate title to less <=60 characters
             const titleLength = 60;
             if(abbreviatedTitle >= titleLength){
