@@ -107,8 +107,9 @@ client.on('message', async message => {
             archive.send(archiveMessage);
 
             // create an embed to share the content with attribution to the user
+            var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}); // see: https://stackoverflow.com/a/5092872
             const archiveEmbed = new Discord.MessageEmbed()
-                .setColor('#0099ff')
+                .setColor(randomColor)
                 .setTitle('Share')
                 //.setURL('<url of share>')
                 //.setAuthor(author, authorAvatar, URL)
