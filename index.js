@@ -9,12 +9,20 @@ const adminRole     = config.admin.role.toLowerCase();
 const prefix        = config.command.prefix;
 const DB            = config.db.name;
 
-// include Sequelize and Discord
+// include file system, Sequelize, and Discord
+const fs        = require('fs');
 const Sequelize = require('sequelize');
-const Discord = require('discord.js');
+const Discord   = require('discord.js');
 
-// initialize a new client connection
-const client = new Discord.Client();
+// initialize a new client connection and command collection
+const client    = new Discord.Client();
+client.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+for(const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
 
 // setup sequelize database using sqlite
 const sequelize = new Sequelize('database', 'user', 'password', {
@@ -61,7 +69,7 @@ client.once('ready', () => {
 // on message received
 client.on('message', async message => {
 
-    // skip if the message's author is a bot
+    // skip if the author is a bot
     if(message.author.bot) {
         return;
     }
@@ -71,153 +79,47 @@ client.on('message', async message => {
 
     // skip if not a member
     if(!member) {
-        console.error('[ERROR] Unable to find member in guild: ', message.author);
+        console.log('[WARN] Unable to find member in guild: ', message.author);
         return;
     }
 
-//==[SHARE -> ARCHIVE]=================================================================================================
+    // regular expression to match a single command pattern
+    const commandRegex = new RegExp(prefix + '[\\w-]+', 'i');
 
-    // TODO:
-    // - Handle copying of attachments in share channel over to archive channel
-
-    // if the channel contains 'share' in the name
-    const shareSuffix   = '-share';
-    const archiveSuffix = '-archive';
-    if(message.channel.name.indexOf(shareSuffix) !== -1){
-
-        // skip if the message does not contain '!share' in the message
-        if(message.content.indexOf(prefix + 'share') === -1){
-            return;
-        }
-
-        // strip out `!share` from the message
-        message.content = message.content.replace(prefix + 'share', '');
-
-        // get share and archive channel names
-        const shareChannel   = message.channel.name;
-        const archiveChannel = shareChannel.replace(shareSuffix, archiveSuffix);
-
-        // get details of the message and author
-        const content       = message.content.trim();
-        const author        = message.author.username;
-        const authorAvatar  = message.author.displayAvatarURL();
-        const authorURL     = message.url;
-        const attachments   = message.attachments;
-
-        // regex for finding URLs
-        var regexURL = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/, 'gi'); // see: http://urlregex.com/
-
-        // check if any URLs are present in the content, and save them to an array
-        let URLs = null;
-        if(content.match(regexURL)) {
-            URLs = content.match(regexURL);
-        }
-
-        // find 'archive' channel based on share channel name
-        const archiveID = message.guild.channels.cache.find(channel => channel.name === archiveChannel).id;
-
-        if(archiveID) {
-            const archive = client.channels.cache.get(archiveID);
-
-            // create embed title from the message content
-            let abbreviatedTitle = 'Share'; // default
-
-            // split the content by newlines to derive a title
-            const separators = new RegExp('[\n]');
-            if(content.split(separators)){
-                abbreviatedTitle = content.split(separators)[0];
-            }
-
-            // remove any double space left by removing !share
-            abbreviatedTitle = abbreviatedTitle.replace('  ', ' ');
-
-            // abbreviate title to less <=60 characters
-            const titleLength = 60;
-            if(abbreviatedTitle.length >= titleLength){
-                abbreviatedTitle = abbreviatedTitle.substring(0,titleLength-3) + '...';
-            }
-
-            // create an embed to share the content with attribution to the user
-            var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);}); // see: https://stackoverflow.com/a/5092872
-            const archiveEmbed = new Discord.MessageEmbed()
-                .setColor(randomColor)
-                .setTitle(abbreviatedTitle)
-                //.setAuthor(author, authorAvatar)
-                .setDescription(content)
-                .setTimestamp()
-                .setFooter(`Shared by: ${author}`, authorAvatar);
-
-            // verify there are attachments in the message
-            if(attachments){
-
-                // general purpose function for human readible file sizes
-                // see: https://stackoverflow.com/a/61505697
-                const hFileSize = function(bytes, si=false){
-                    let u, b=bytes, t= si ? 1000 : 1024;     
-                    ['', si?'k':'K', ...'MGTPEZY'].find(x=> (u=x, b/=t, b**2<1));
-                    return `${u ? (t*b).toFixed(1) : bytes} ${u}${!si && u ? 'i':''}B`;    
-                };
-
-                // iterate over each attachment
-                attachments.forEach((attachment) => {
-
-                    // set the thumbnail of the embed to the URL of any image
-                    if(attachment.url.match(/.(jpg|jpeg|png|gif|bmp|ico)$/i)){
-                        //archiveEmbed.setThumbnail(attachment.url);
-                        archiveEmbed.setImage(attachment.url);
-                    }
-                    else {
-
-                        // get filesize in human readible format
-                        const fileSize = hFileSize(attachment.size);
-
-                        // add a link to each file
-                        archiveEmbed.addFields({
-                            name: 'Attachment', 
-                            value: `[${attachment.name}](${attachment.url}) \`${fileSize}\``
-                        });
-                    }
-                });
-            }
-
-            // set URL if one was found
-            if(URLs){
-                archiveEmbed.setURL(URLs[0]);
-            }
-
-            // add link back to original post
-            archiveEmbed.addFields({ 
-                name: '\u200B', 
-                value: `[Original Post](${authorURL})` 
-            });
-
-            // send embed of the share
-            archive.send(archiveEmbed);
-
-            // create additional embeds for any/all URLs in message content
-            if(URLs){
-                // get total number of URLs
-                const numURLs = URLs.length;
-                // send each URL as a separate post
-                URLs.forEach((URL, index) => {
-                    archive.send(`\`[URL ${index + 1}/${numURLs}]\` ${URL}`);
-                });
-                // to send all URLs in a single post
-                //archive.send(URLs.join('\n'));
-            }
-        }
+    // skip if no command is present in the message
+    if(!commandRegex.test(message.content)){
+        return;
     }
+
+    // extract command from message
+    const command = message.content.match(commandRegex)[0].toLowerCase;
+    message.content = message.content.replace(commandRegex, '');
+    console.debug('[DEBUG] Command: ', command);
+    console.debug('[DEBUG] Content: ', message.content);
+
+    // skip if command is not found
+	if(!client.commands.has(command)){
+        return;
+    } 
+
+	try{
+		client.commands.get(command).execute(message);
+    } 
+    catch(error){
+        console.log('[ERROR] Unable to execute command: ', command);
+		console.error(error);
+	}
 
 
 //==[ADMIN COMMANDS]===================================================================================================
 
-    // verify user is in an admin role (see: config.json)
-    if(!member.roles.cache.some(role => role.name.toLowerCase() === adminRole)) {
-        console.log(`[DEBUG] Member is not in an admin role "${adminRole}": `, member);
-        return;
-    }
+    // // verify user is in an admin role (see: config.json)
+    // if(!member.roles.cache.some(role => role.name.toLowerCase() === adminRole)) {
+    //     console.debug(`[DEBUG] Member is not in an admin role "${adminRole}": `, member);
+    //     return;
+    // }
 
-    console.log(`[DEBUG] Member is an admin with the role "${adminRole}"`);
+    // console.debug(`[DEBUG] Member is an admin with the role "${adminRole}"`);
 
     // log entire message to console
     // console.log('[DEBUG 1] Message Object: ', message);
@@ -364,6 +266,6 @@ client.on('message', async message => {
 });
 
 // login with OAuth2 token
-let token = process.env.token || config.token;
+const token = process.env.token || config.token;
 client.login(token);
 console.debug('[DEBUG] Bot logged in using token');
