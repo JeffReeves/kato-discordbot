@@ -7,6 +7,7 @@ author: Jeff Reeves
 const config        = require('./config.json');
 const adminRole     = config.admin.role.toLowerCase();
 const prefix        = config.command.prefix;
+const emojis        = config.command.emojis;
 const DB            = config.db.name;
 
 // include file system, Sequelize, and Discord
@@ -21,7 +22,7 @@ client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for(const file of commandFiles) {
 	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
+    client.commands.set(command.name, command);
 }
 
 // add cooldowns to prevent spamming
@@ -66,6 +67,62 @@ client.once('ready', () => {
 
     // Sequelize sync Tags table
     Tags.sync({ force: true }) // force clears table
+});
+
+
+// on reactions with emojis
+client.on('messageReactionAdd', async messageReaction => {
+
+    // debug
+    // console.log('[DEBUG X] Message Reaction: ', messageReaction);
+    // console.log('[DEBUG Y] Emoji: ', messageReaction._emoji);
+    // console.log('[DEBUG Z] Reactions: ', messageReaction.message.reactions);
+
+    // skip if the author is a bot
+    if(messageReaction.message.author.bot) {
+        return;
+    }
+
+    // skip if reaction emoji is not on emoji list
+    if(!emojis.includes(messageReaction._emoji.name)){
+        console.log(`[DEBUG] Reaction emoji ${messageReaction._emoji.name} is NOT in emoji list ${emojis}`);
+        return;
+    }
+
+    // check if the current emoji is in the cache with a count > 1,
+        // if it is, skip it
+    if(messageReaction.message.reactions.cache.get(messageReaction._emoji.name).count > 1){
+        console.log(`[DEBUG] ${messageReaction._emoji.name} count is greater than 1`);
+        return;
+    }
+
+    // assume that current emoji was just added with a count of 1
+    // get emoji list (sans current emoji), and check the cache to see if any 
+    //  of them are in the cache
+        // if so, skip here
+    const remainingEmoji = emojis.filter((emoji) => { 
+        return emoji !== messageReaction._emoji.name
+    });
+
+    if(messageReaction.message.reactions.cache.some((reactionValues, reactionEmoji) => {
+        //console.log('[DEBUG] Checking reactions cache for ', reactionEmoji);
+        return remainingEmoji.includes(reactionEmoji);
+    })){
+        //console.log('[DEBUG] Other emojis are already present');
+        return;
+    }
+
+    // get command based on emoji
+    const command = client.commands.find(cmd => cmd.emojis && cmd.emojis.includes(messageReaction._emoji.name));
+
+    // try executing the command or catch its error
+	try{
+        command.execute(messageReaction.message, client);
+    } 
+    catch(error){
+        console.log('[ERROR] Unable to execute command: ', command);
+		console.error(error);
+	}
 });
 
 
