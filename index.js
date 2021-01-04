@@ -153,14 +153,14 @@ client.on('message', async message => {
 
     // extract command name from message content
     const commandName = message.content.match(commandRegex)[0].toLowerCase().replace(prefix, '');
-    console.debug('[DEBUG] Command: ', commandName);
+    //console.debug('[DEBUG] Command: ', commandName);
 
     // find command from commands collection or from aliases
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
         
     // remove command from message content and trim whitespace
     message.content = message.content.replace(commandRegex, '').trim();
-    console.debug('[DEBUG] Content: ', message.content);
+    //console.debug('[DEBUG] Content: ', message.content);
 
     // skip if command is not found
 	if(!command){
