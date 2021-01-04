@@ -114,10 +114,8 @@ client.on('messageReactionAdd', async messageReaction => {
 
     // get command based on emoji
     console.log('[DEBUG] client.commands: ', client.commands);
-    console.log('[DEBUG] command emojis: ', client.commands.emojis);
-    const selectedEmoji = messageReaction._emoji.name.trim();
-    const command = client.commands.find(cmd => cmd.emojis && cmd.emojis.includes(selectedEmoji));
-    console.log('[DEBUG] selectedEmoji: ', selectedEmoji);
+    const command = client.commands.find(cmd => cmd.emojis && cmd.emojis.includes(messageReaction._emoji.name));
+    console.log('[DEBUG] messageReaction._emoji.name: ', messageReaction._emoji.name);
     console.log('[DEBUG] command:', command);
 
     // // try executing the command or catch its error
