@@ -92,15 +92,19 @@ client.on('messageReactionAdd', async messageReaction => {
     // skip if an emoji on the list is already used
     messageReaction.message.reactions.cache.forEach((reactionValues, reactionEmoji, map) => {
         //console.log('[DEBUG] Reaction: ', key, 'Count: ', value.count);
-
+        let stopEarly = false;
         emojis.forEach(emoji => {
             if(emoji === reactionEmoji){
                 if(reactionValues.count > 1){
                     console.log(`[DEBUG] Emoji ${emoji} count (${reactionValues.count}) is greater than 1`);
+                    stopEarly = true;
                     return;
                 }
             }
-        }); 
+        });
+        if(stopEarly){
+            return;
+        }
         // if(reactionEmoji === messageReaction._emoji.name){
         //     console.log('[DEBUG] Reaction: ', reactionEmoji, 'Count: ', value.count);
         // }
