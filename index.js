@@ -22,7 +22,7 @@ client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for(const file of commandFiles) {
 	const command = require(`./commands/${file}`);
-	client.commands.set(command.name, command);
+    client.commands.set(command.name, command);
 }
 
 // add cooldowns to prevent spamming
@@ -85,10 +85,9 @@ client.on('messageReactionAdd', async messageReaction => {
 
     // skip if reaction emoji is not on emoji list
     if(!emojis.includes(messageReaction._emoji.name)){
-        console.log(`Reaction emoji ${messageReaction._emoji.name} is NOT in emoji list ${emojis}`);
+        console.log(`[DEBUG] Reaction emoji ${messageReaction._emoji.name} is NOT in emoji list ${emojis}`);
         return;
     }
-
 
     // check if the current emoji is in the cache with a count > 1,
         // if it is, skip it
@@ -106,17 +105,24 @@ client.on('messageReactionAdd', async messageReaction => {
     });
 
     if(messageReaction.message.reactions.cache.some((reactionValues, reactionEmoji) => {
-        console.log('[DEBUG] Checking reactions cache for ', reactionEmoji);
-        if(remainingEmoji.includes(reactionEmoji)){
-            console.log(`[DEBUG] Found ${reactionEmoji} in cache`);
-            return true;
-        }
+        //console.log('[DEBUG] Checking reactions cache for ', reactionEmoji);
+        return remainingEmoji.includes(reactionEmoji);
     })){
-        console.log('[DEBUG] Other emojis are already present');
+        //console.log('[DEBUG] Other emojis are already present');
         return;
     }
 
-    console.log('[DEBUG] This should not get called if we exited earlier');
+    // get command based on emoji
+    const command = client.commands.find(cmd => cmd.emojis && cmd.emojis.includes(messageReaction._emoji.name));
+
+    // try executing the command or catch its error
+	try{
+        command.execute(message, client);
+    } 
+    catch(error){
+        console.log('[ERROR] Unable to execute command: ', command);
+		console.error(error);
+	}
 });
 
 

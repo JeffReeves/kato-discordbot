@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: 'archive',
     aliases: ['share', 'save'],
+    emojis: ["📎", "💾", "📌"],
     cooldown: 30,
 	description: 'Clones a message and makes a custom embed in another channel',
 	execute(message, client){
