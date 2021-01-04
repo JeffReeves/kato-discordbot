@@ -99,10 +99,6 @@ client.on('messageReactionAdd', async messageReaction => {
         }
     });
 
-    for (const [key, value] of Object.entries(animals)) {
-        console.log(`${key}: ${value}`);
-    }
-    
     // iterate over list of emojis
     emojis.forEach(emoji => {
         messageReaction.message.reactions.cache.forEach((value, key, map) => {
