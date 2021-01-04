@@ -117,7 +117,7 @@ client.on('messageReactionAdd', async messageReaction => {
 
     // try executing the command or catch its error
 	try{
-        command.execute(message, client);
+        command.execute(messageReaction.message, client);
     } 
     catch(error){
         console.log('[ERROR] Unable to execute command: ', command);
