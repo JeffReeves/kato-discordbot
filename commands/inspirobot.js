@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-var request   = require('request');
+const request = require('request');
 
 module.exports = {
     name: 'inspirobot',
@@ -11,11 +11,10 @@ module.exports = {
 
         console.debug('[DEBUG] Trying to get insirobot quote...');
         const inspirobotURL    = 'https://inspirobot.me/api?generate=true';
-        let inspirobotImageURL = '';
-        request(inspirobotURL, function (error, response, body) {
+        const inspirobotImageURL = await request(inspirobotURL, function (error, response, body) {
             if(!error && response.statusCode == 200) {
                 console.log('[DEBUG] Inspirobot body: ', body);
-                inspirobotImageURL = body;
+                return body;
             }
             else {
                 console.error('[ERROR] Error fetching inspirobot image URL: ', response.statusCode);
@@ -30,7 +29,7 @@ module.exports = {
             const inspirobotChannel = client.channels.cache.get(inspirobotChannelID);
             console.log('[DEBUG] inspirobotChannel: ', inspirobotChannel);
             if(inspirobotImageURL){
-                inspirobotChannel.channel.send(inspirobotImageURL);
+                inspirobotChannel.send(inspirobotImageURL);
             }
         }
         
