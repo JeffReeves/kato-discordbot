@@ -14,6 +14,7 @@ module.exports = {
         request(inspirobotURL, function (error, response, body) {
             if(!error && response.statusCode == 200) {
                 console.log('[DEBUG] Inspirobot body: ', body);
+                const inspirobotImageURL = body;
                 // find 'inspirobot' channel
                 const inspirobotChannelID = message.guild.channels.cache.find(channel => channel.name === 'inspirobot').id;
                 if(inspirobotChannelID){
