@@ -90,10 +90,8 @@ client.on('messageReactionAdd', async messageReaction => {
     }
 
     // skip if the reaction is not the first one
-    emojis.forEach(emoji => {
-        if(messageReaction.message.reactions.cache.has(emoji)){
-            console.log('[DEBUG] Message has reactions on the emoji list');
-        }
+    messageReaction.message.reactions.cache.forEach((value, key, map) => {
+        console.log('[DEBUG] Reactions: ', key, value);
     });
 });
 
