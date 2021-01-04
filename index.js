@@ -113,16 +113,19 @@ client.on('messageReactionAdd', async messageReaction => {
     }
 
     // get command based on emoji
-    const command = client.commands.find(cmd => cmd.emojis && cmd.emojis.includes(messageReaction._emoji.name));
+    console.log('[DEBUG] client.commands: ', client.commands);
+    //const command = client.commands.find(cmd => cmd.emojis && cmd.emojis.includes(messageReaction._emoji.name));
+    console.log('[DEBUG] messageReaction._emoji.name: ', messageReaction._emoji.name);
+    //console.log('[DEBUG] command:', command);
 
-    // try executing the command or catch its error
-	try{
-        command.execute(message, client);
-    } 
-    catch(error){
-        console.log('[ERROR] Unable to execute command: ', command);
-		console.error(error);
-	}
+    // // try executing the command or catch its error
+	// try{
+    //     command.execute(message, client);
+    // } 
+    // catch(error){
+    //     console.log('[ERROR] Unable to execute command: ', command);
+	// 	console.error(error);
+	// }
 });
 
 
