@@ -69,6 +69,14 @@ client.once('ready', () => {
 });
 
 
+// checking for reactions with emojis
+client.on('messageReactionAdd', async messageReaction => {
+
+    // debug
+    console.log('[DEBUG X] Message Reaction: ', messageReaction);
+});
+
+
 // on message received
 client.on('message', async message => {
 
