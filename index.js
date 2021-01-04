@@ -93,10 +93,11 @@ client.on('messageReactionAdd', async messageReaction => {
     const reactionAlreadyExists = messageReaction.message.reactions.cache.some((reactionValues, reactionEmoji, map) => {
 
         if(emojis.includes(reactionEmoji)){
-            console.log(`[DEBUG] Reaction emoji ${reactionEmoji} found in emoji list`);
+            console.log(`[DEBUG] An existing reaction emoji ${reactionEmoji} was found in emoji list`);
 
             if(reactionValues.count > 1){
                 console.log(`[DEBUG] Emoji count (${reactionValues.count}) is greater than 1`);
+                console.log(`[DEBUG] Skipping ${messageReaction._emoji.name}`);
                 return true;
             }
         }
