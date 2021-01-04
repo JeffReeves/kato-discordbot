@@ -106,8 +106,8 @@ client.on('message', async message => {
     console.debug('[DEBUG] Content: ', message.content);
 
     // skip if command is not found
-	if(!client.commands.has(command)){
-        console.debug('[DEBUG] Command not present: ', command);
+	if(!command){
+        console.debug('[DEBUG] Command not present: ', commandName);
         return;
     } 
 
