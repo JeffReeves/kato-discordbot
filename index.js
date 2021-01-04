@@ -92,7 +92,7 @@ client.on('messageReactionAdd', async messageReaction => {
     // skip if an emoji on the list is already used
     console.log('[DEBUG] messageReaction cache: ', messageReaction.message.reactions.cache);
     let totalEmojiCount = 0;
-    messageReaction.message.reactions.cache.forEach((reactionEmoji) => {
+    messageReaction.message.reactions.cache.forEach((reactionValues, reactionEmoji) => {
         console.log('[DEBUG] totalEmojiCount: ', totalEmojiCount);
         if(totalEmojiCount > 1 ){
             console.log(`[DEBUG] Emoji count (${reactionValues.count}) is greater than 1`);
