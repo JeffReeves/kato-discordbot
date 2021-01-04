@@ -3,6 +3,8 @@ module.exports = {
 	description: 'Clones a message and makes a custom embed in another channel',
 	execute(message){
 
+        console.debug('[DEBUG 2] Trying to archive...');
+
         // if the channel contains 'share' in the name
         const shareSuffix   = '-share';
         const archiveSuffix = '-archive';

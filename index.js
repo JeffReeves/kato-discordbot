@@ -99,6 +99,7 @@ client.on('message', async message => {
 
     // skip if command is not found
 	if(!client.commands.has(command)){
+        console.debug('[DEBUG] Command not present: ', command);
         return;
     } 
 
