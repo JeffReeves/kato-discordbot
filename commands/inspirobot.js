@@ -30,7 +30,7 @@ module.exports = {
             const inspirobotChannel = client.channels.cache.get(inspirobotChannelID);
             console.log('[DEBUG] inspirobotChannel: ', inspirobotChannel);
             if(inspirobotImageURL){
-                inspirobotChannel.send(`Inspirobot Says: ${inspirobotImageURL}`);
+                inspirobotChannel.channel.send(inspirobotImageURL);
             }
         }
         
