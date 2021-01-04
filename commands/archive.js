@@ -11,13 +11,13 @@ module.exports = {
         const archiveSuffix = '-archive';
         if(message.channel.name.indexOf(shareSuffix) !== -1){
 
-            // skip if the message does not contain '!share' in the message
-            if(message.content.indexOf(prefix + 'share') === -1){
-                return;
-            }
+            // // skip if the message does not contain '!share' in the message
+            // if(message.content.indexOf(prefix + 'share') === -1){
+            //     return;
+            // }
 
-            // strip out `!share` from the message
-            message.content = message.content.replace(prefix + 'share', '');
+            // // strip out `!share` from the message
+            // message.content = message.content.replace(prefix + 'share', '');
 
             // get share and archive channel names
             const shareChannel   = message.channel.name;
