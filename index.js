@@ -117,7 +117,7 @@ client.on('messageReactionAdd', async messageReaction => {
         // skip if emoji is not present in the reactions
         if(!messageReaction.message.reactions.cache.has(emoji)){
             console.log('[DEBUG] Emoji not in reaction');
-            continue;
+            return;
         }
         
         // check if count is greater than 1
