@@ -89,9 +89,39 @@ client.on('messageReactionAdd', async messageReaction => {
         return;
     }
 
-    // skip if the reaction is not the first one
+    // skip if an emoji on the list is already used
     messageReaction.message.reactions.cache.forEach((value, key, map) => {
         console.log('[DEBUG] Reaction: ', key, 'Count: ', value.count);
+
+
+        if(key === messageReaction._emoji.name){
+            console.log('[DEBUG] Reaction: ', key, 'Count: ', value.count);
+        }
+    });
+
+    for (const [key, value] of Object.entries(animals)) {
+        console.log(`${key}: ${value}`);
+    }
+    
+    // iterate over list of emojis
+    emojis.forEach(emoji => {
+        messageReaction.message.reactions.cache.forEach((value, key, map) => {
+            console.log('[DEBUG] Reaction: ', key, 'Count: ', value.count);
+    
+    
+            if(key === messageReaction._emoji.name){
+                console.log('[DEBUG] Reaction: ', key, 'Count: ', value.count);
+            }
+        });
+
+        // skip if emoji is not present in the reactions
+        if(!messageReaction.message.reactions.cache.has(emoji)){
+            console.log('[DEBUG] Emoji not in reaction');
+            continue;
+        }
+        
+        // check if count is greater than 1
+        console.log('[DEBUG] get map: ', messageReaction.message.reactions.cache.get(emoji));
     });
 });
 
