@@ -11,7 +11,7 @@ module.exports = {
 
         console.debug('[DEBUG] Trying to get insirobot quote...');
         const inspirobotURL    = 'https://inspirobot.me/api?generate=true';
-        let inspirobotImageURL = none;
+        let inspirobotImageURL = '';
         request(inspirobotURL, function (error, response, body) {
             if(!error && response.statusCode == 200) {
                 console.log('[DEBUG] Inspirobot body: ', body);
