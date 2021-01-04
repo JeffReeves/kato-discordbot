@@ -93,7 +93,7 @@ client.on('message', async message => {
 
     // extract command from message
     const command = message.content.match(commandRegex)[0].toLowerCase();
-    message.content = message.content.replace(commandRegex, '');
+    message.content = message.content.replace(commandRegex, '').trim();
     console.debug('[DEBUG] Command: ', command);
     console.debug('[DEBUG] Content: ', message.content);
 
