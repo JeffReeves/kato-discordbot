@@ -73,14 +73,14 @@ client.once('ready', () => {
 // on reactions with emojis
 client.on('messageReactionAdd', async messageReaction => {
 
-    // skip if the author is a bot
-    if(message.author.bot) {
-        return;
-    }
-
     // debug
     console.log('[DEBUG X] Message Reaction: ', messageReaction);
     console.log('[DEBUG Y] Emoji: ', messageReaction._emoji);
+
+    // skip if the author is a bot
+    if(messageReaction.message.author.bot) {
+        return;
+    }
 
     // // check for a specific emoji for the reaction
     // // skip if no command is present in the message
