@@ -19,9 +19,20 @@ module.exports = {
             }
             else {
                 console.error('[ERROR] Error fetching inspirobot image URL: ', response.statusCode);
+                return;
             }
         });
 
+        // find 'inspirobot' channel
+        const inspirobotChannelID = message.guild.channels.cache.find(channel => channel.name === 'inspirobot').id;
+        if(inspirobotChannelID){
+            const inspirobotChannel = client.channels.cache.get(archiveID);
+
+            if(inspirobotImageURL){
+                inspirobotChannel.send(inspirobotImageURL);
+            }
+        }
+        
         // // if the channel contains 'inspirobot' in the name
         // const channelName = 'inspirobot';
         // if(message.channel.name.indexOf(channelName) !== -1){
