@@ -24,6 +24,9 @@ for(const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
+// add cooldowns to prevent spamming
+const cooldowns = new Discord.Collection();
+
 // setup sequelize database using sqlite
 const sequelize = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
@@ -91,10 +94,14 @@ client.on('message', async message => {
         return;
     }
 
-    // extract command from message
-    let command = message.content.match(commandRegex)[0];
-    command = command.toLowerCase().replace(prefix, '');
-    console.debug('[DEBUG] Command: ', command);
+    // extract command name from message content
+    const commandName = message.content.match(commandRegex)[0].toLowerCase().replace(prefix, '');
+    console.debug('[DEBUG] Command: ', commandName);
+
+    // find command from commands collection or from aliases
+    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+        
+    // remove command from message content and trim whitespace
     message.content = message.content.replace(commandRegex, '').trim();
     console.debug('[DEBUG] Content: ', message.content);
 

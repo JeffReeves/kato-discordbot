@@ -1,5 +1,6 @@
 module.exports = {
-	name: 'archive',
+    name: 'archive',
+    aliases: ['share', 'save'],
 	description: 'Clones a message and makes a custom embed in another channel',
 	execute(message){
 
