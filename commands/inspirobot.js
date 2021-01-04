@@ -26,7 +26,7 @@ module.exports = {
         // find 'inspirobot' channel
         const inspirobotChannelID = message.guild.channels.cache.find(channel => channel.name === 'inspirobot').id;
         if(inspirobotChannelID){
-            const inspirobotChannel = client.channels.cache.get(archiveID);
+            const inspirobotChannel = client.channels.cache.get(inspirobotChannelID);
 
             if(inspirobotImageURL){
                 inspirobotChannel.send(inspirobotImageURL);
