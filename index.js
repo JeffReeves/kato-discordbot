@@ -76,17 +76,20 @@ client.on('messageReactionAdd', async messageReaction => {
     // debug
     console.log('[DEBUG X] Message Reaction: ', messageReaction);
     console.log('[DEBUG Y] Emoji: ', messageReaction._emoji);
+    console.log('[DEBUG Z] Reactions: ', messageReaction.message.reactions);
 
     // skip if the author is a bot
     if(messageReaction.message.author.bot) {
         return;
     }
 
-    // check for a specific emoji for the reaction
-    // skip if no command is present in the message
-    if(emojis.includes(messageReaction._emoji.name)){
-        console.log(`[DEBUG Z] Reaction emoji ${messageReaction._emoji.name} is in emoji list ${emojis}`);
+    // skip if reaction emoji is not on emoji list
+    if(!emojis.includes(messageReaction._emoji.name)){
+        console.log(`Reaction emoji ${messageReaction._emoji.name} is NOT in emoji list ${emojis}`);
+        return;
     }
+
+    // skip if the reaction is not the first one
 
 });
 
