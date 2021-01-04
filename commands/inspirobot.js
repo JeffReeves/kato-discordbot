@@ -11,7 +11,7 @@ module.exports = {
 
         console.debug('[DEBUG] Trying to get insirobot quote...');
         const inspirobotURL    = 'https://inspirobot.me/api?generate=true';
-        let inspirobotImageURL = '';
+        let inspirobotImageURL = none;
         request(inspirobotURL, function (error, response, body) {
             if(!error && response.statusCode == 200) {
                 console.log('[DEBUG] Inspirobot body: ', body);
@@ -26,10 +26,11 @@ module.exports = {
         // find 'inspirobot' channel
         const inspirobotChannelID = message.guild.channels.cache.find(channel => channel.name === 'inspirobot').id;
         if(inspirobotChannelID){
+            console.log('[DEBUG] inspirobotChannelID: ', inspirobotChannelID);
             const inspirobotChannel = client.channels.cache.get(inspirobotChannelID);
-
+            console.log('[DEBUG] inspirobotChannel: ', inspirobotChannel);
             if(inspirobotImageURL){
-                inspirobotChannel.send(inspirobotImageURL);
+                inspirobotChannel.send(`Inspirobot Says: ${inspirobotImageURL}`);
             }
         }
         
