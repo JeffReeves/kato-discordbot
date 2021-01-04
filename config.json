@@ -1,5 +1,8 @@
 {
 	"token": "Place_Your_Bots_OAuth2_Token_Here",
+	"admin": {
+		"role": "admin"
+	},
 	"command": {
 		"prefix": "!"
 	},
