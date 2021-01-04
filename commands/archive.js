@@ -2,7 +2,7 @@ module.exports = {
     name: 'archive',
     aliases: ['share', 'save'],
 	description: 'Clones a message and makes a custom embed in another channel',
-	execute(message){
+	execute(message, client){
 
         console.debug('[DEBUG 2] Trying to archive...');
 

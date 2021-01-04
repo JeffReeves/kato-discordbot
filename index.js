@@ -112,7 +112,7 @@ client.on('message', async message => {
     } 
 
 	try{
-        command.execute(message);
+        command.execute(message, client);
     } 
     catch(error){
         console.log('[ERROR] Unable to execute command: ', command);
