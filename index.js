@@ -92,8 +92,8 @@ client.on('messageReactionAdd', async messageReaction => {
     // skip if an emoji on the list is already used
     console.log('[DEBUG] messageReaction cache: ', messageReaction.message.reactions.cache);
     let totalEmojiCount = 0;
-    const reactionAlreadyExists = messageReaction.message.reactions.cache.forEach((reactionEmoji) => {
-        
+    messageReaction.message.reactions.cache.forEach((reactionEmoji) => {
+        console.log('[DEBUG] totalEmojiCount: ', totalEmojiCount);
         if(totalEmojiCount > 1 ){
             console.log(`[DEBUG] Emoji count (${reactionValues.count}) is greater than 1`);
             console.log(`[DEBUG] Skipping ${messageReaction._emoji.name}`);
@@ -106,7 +106,9 @@ client.on('messageReactionAdd', async messageReaction => {
         }
     });
 
-    if(reactionAlreadyExists){
+    console.log('[DEBUG] Final totalEmojiCount: ', totalEmojiCount);
+
+    if(totalEmojiCount > 1){
         console.log('[DEBUG] A reaction already exists');
         return;
     }
