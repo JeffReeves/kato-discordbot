@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const fetch = require('node-fetch');
 const request = require('request');
 
 module.exports = {
@@ -11,25 +12,38 @@ module.exports = {
 
         console.debug('[DEBUG] Trying to get insirobot quote...');
         const inspirobotURL    = 'https://inspirobot.me/api?generate=true';
-        const inspirobotImageURL = await request(inspirobotURL, function (error, response, body) {
-            if(!error && response.statusCode == 200) {
-                console.log('[DEBUG] Inspirobot body: ', body);
-                return body;
-            }
-            else {
-                console.error('[ERROR] Error fetching inspirobot image URL: ', response.statusCode);
-                return;
-            }
-        });
+        // const inspirobotImageURL = await request(inspirobotURL, function (error, response, body) {
+        //     if(!error && response.statusCode == 200) {
+        //         console.log('[DEBUG] Inspirobot body: ', body);
+        //         return body;
+        //     }
+        //     else {
+        //         console.error('[ERROR] Error fetching inspirobot image URL: ', response.statusCode);
+        //         return;
+        //     }
+        // });
 
+        // // find 'inspirobot' channel
+        // const inspirobotChannelID = message.guild.channels.cache.find(channel => channel.name === 'inspirobot').id;
+        // if(inspirobotChannelID){
+        //     console.log('[DEBUG] inspirobotChannelID: ', inspirobotChannelID);
+        //     const inspirobotChannel = client.channels.cache.get(inspirobotChannelID);
+        //     console.log('[DEBUG] inspirobotChannel: ', inspirobotChannel);
+        //     if(inspirobotImageURL){
+        //         inspirobotChannel.send(inspirobotImageURL);
+        //     }
+        // }
+
+        const { file } = await fetch(inspirobotURL).then(response => response.json());
+        console.log('[DEBUG] Inspirobot file: ', file);
         // find 'inspirobot' channel
         const inspirobotChannelID = message.guild.channels.cache.find(channel => channel.name === 'inspirobot').id;
         if(inspirobotChannelID){
             console.log('[DEBUG] inspirobotChannelID: ', inspirobotChannelID);
             const inspirobotChannel = client.channels.cache.get(inspirobotChannelID);
             console.log('[DEBUG] inspirobotChannel: ', inspirobotChannel);
-            if(inspirobotImageURL){
-                inspirobotChannel.send(inspirobotImageURL);
+            if(file){
+                inspirobotChannel.send(file);
             }
         }
         
