@@ -89,31 +89,34 @@ client.on('messageReactionAdd', async messageReaction => {
         return;
     }
 
-    // skip if an emoji on the list is already used
-    console.log('[DEBUG] messageReaction cache: ', messageReaction.message.reactions.cache);
-    let totalEmojiCount = 0;
-    messageReaction.message.reactions.cache.forEach((reactionValues, reactionEmoji) => {
-        console.log('[DEBUG] totalEmojiCount: ', totalEmojiCount);
-        if(totalEmojiCount > 1 ){
-            console.log(`[DEBUG] Emoji count (${reactionValues.count}) is greater than 1`);
-            console.log(`[DEBUG] Skipping ${messageReaction._emoji.name}`);
-            return true; 
-        }
 
-        if(emojis.includes(reactionEmoji)){
-            console.log(`[DEBUG] Reaction emoji ${reactionEmoji} was found in emoji list`);
-            totalEmojiCount++;
-        }
-    });
-
-    console.log('[DEBUG] Final totalEmojiCount: ', totalEmojiCount);
-
-    if(totalEmojiCount > 1){
-        console.log('[DEBUG] A reaction already exists');
+    // check if the current emoji is in the cache with a count > 1,
+        // if it is, skip it
+    if(messageReaction.message.reactions.cache.get(messageReaction._emoji.name).count > 1){
+        console.log(`[DEBUG] ${messageReaction._emoji.name} count is greater than 1`);
         return;
     }
 
-    console.log('[DEBUG] This should not get called if the total reaction count is > 1');
+    // assume that current emoji was just added with a count of 1
+    // get emoji list (sans current emoji), and check the cache to see if any 
+    //  of them are in the cache
+        // if so, skip here
+    const remainingEmoji = emojis.filter((emoji) => { 
+        return emoji !== messageReaction._emoji.name
+    });
+
+    if(messageReaction.message.reactions.cache.some((reactionValues, reactionEmoji) => {
+        console.log('[DEBUG] Checking reactions cache for ', reactionEmoji);
+        if(remainingEmoji.includes(reactionEmoji)){
+            console.log(`[DEBUG] Found ${reactionEmoji} in cache`);
+            return true;
+        }
+    })){
+        console.log('[DEBUG] Other emojis are already present');
+        return;
+    }
+
+    console.log('[DEBUG] This should not get called if we exited earlier');
 });
 
 
