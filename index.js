@@ -82,11 +82,11 @@ client.on('messageReactionAdd', async messageReaction => {
         return;
     }
 
-    // // check for a specific emoji for the reaction
-    // // skip if no command is present in the message
-    // if(emojis.includes())){
-    //     return;
-    // }
+    // check for a specific emoji for the reaction
+    // skip if no command is present in the message
+    if(emojis.includes(messageReaction._emoji.name)){
+        console.log(`[DEBUG Z] Reaction emoji ${messageReaction._emoji.name} is in emoji list ${emojis}`);
+    }
 
 });
 
