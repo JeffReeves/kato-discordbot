@@ -74,9 +74,9 @@ client.once('ready', () => {
 client.on('messageReactionAdd', async messageReaction => {
 
     // debug
-    console.log('[DEBUG X] Message Reaction: ', messageReaction);
-    console.log('[DEBUG Y] Emoji: ', messageReaction._emoji);
-    console.log('[DEBUG Z] Reactions: ', messageReaction.message.reactions);
+    // console.log('[DEBUG X] Message Reaction: ', messageReaction);
+    // console.log('[DEBUG Y] Emoji: ', messageReaction._emoji);
+    // console.log('[DEBUG Z] Reactions: ', messageReaction.message.reactions);
 
     // skip if the author is a bot
     if(messageReaction.message.author.bot) {
