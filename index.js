@@ -91,7 +91,7 @@ client.on('messageReactionAdd', async messageReaction => {
 
     // skip if the reaction is not the first one
     messageReaction.message.reactions.cache.forEach((value, key, map) => {
-        console.log('[DEBUG] Reactions: ', key, value);
+        console.log('[DEBUG] Reaction: ', key, 'Count: ', value.count);
     });
 });
 
