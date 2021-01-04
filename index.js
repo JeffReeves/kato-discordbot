@@ -7,6 +7,7 @@ author: Jeff Reeves
 const config        = require('./config.json');
 const adminRole     = config.admin.role.toLowerCase();
 const prefix        = config.command.prefix;
+const emojis        = config.command.emojis;
 const DB            = config.db.name;
 
 // include file system, Sequelize, and Discord
@@ -69,11 +70,24 @@ client.once('ready', () => {
 });
 
 
-// checking for reactions with emojis
+// on reactions with emojis
 client.on('messageReactionAdd', async messageReaction => {
+
+    // skip if the author is a bot
+    if(message.author.bot) {
+        return;
+    }
 
     // debug
     console.log('[DEBUG X] Message Reaction: ', messageReaction);
+    console.log('[DEBUG Y] Emoji: ', messageReaction._emoji);
+
+    // // check for a specific emoji for the reaction
+    // // skip if no command is present in the message
+    // if(emojis.includes())){
+    //     return;
+    // }
+
 });
 
 
