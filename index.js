@@ -91,45 +91,29 @@ client.on('messageReactionAdd', async messageReaction => {
 
     // skip if an emoji on the list is already used
     messageReaction.message.reactions.cache.forEach((reactionValues, reactionEmoji, map) => {
-        //console.log('[DEBUG] Reaction: ', key, 'Count: ', value.count);
-        let stopEarly = false;
-        emojis.forEach(emoji => {
+        // emojis.forEach(emoji => {
+        //     if(emoji === reactionEmoji){
+        //         if(reactionValues.count > 1){
+        //             console.log(`[DEBUG] Emoji ${emoji} count (${reactionValues.count}) is greater than 1`);
+        //             return;
+        //         }
+        //     }
+        // });
+
+        if(emojis.some(emoji => {
             if(emoji === reactionEmoji){
                 if(reactionValues.count > 1){
                     console.log(`[DEBUG] Emoji ${emoji} count (${reactionValues.count}) is greater than 1`);
-                    stopEarly = true;
                     return;
                 }
             }
-        });
-        if(stopEarly){
+        })){
+            console.log('[DEBUG] Emoji count is greater than 1. Skipping...');
             return;
-        }
-        // if(reactionEmoji === messageReaction._emoji.name){
-        //     console.log('[DEBUG] Reaction: ', reactionEmoji, 'Count: ', value.count);
-        // }
+        };
     });
 
-    // // iterate over list of emojis
-    // emojis.forEach(emoji => {
-    //     messageReaction.message.reactions.cache.forEach((value, key, map) => {
-    //         console.log('[DEBUG] Reaction: ', key, 'Count: ', value.count);
-    
-    
-    //         if(key === messageReaction._emoji.name){
-    //             console.log('[DEBUG] Reaction: ', key, 'Count: ', value.count);
-    //         }
-    //     });
-
-    //     // skip if emoji is not present in the reactions
-    //     if(!messageReaction.message.reactions.cache.has(emoji)){
-    //         console.log('[DEBUG] Emoji not in reaction');
-    //         return;
-    //     }
-        
-    //     // check if count is greater than 1
-    //     console.log('[DEBUG] get map: ', messageReaction.message.reactions.cache.get(emoji));
-    // });
+    console.log('[DEBUG] This should not get called if the reaction count is > 1');
 });
 
 
