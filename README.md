@@ -2,8 +2,10 @@
 
 A Discord Bot to assist with managing servers and their channels.
 
-Post messages at certain times/intervals, copy tagged messages from 
-one channel to another, etc.
+Archive tagged messages from one channel to another, get random quotes from 
+Inspirobot, etc.
+
+Many additional features will be coming "soon&trade;".
 
 Named in homage of the assistant, driver, enforcer, and friend of 
 "The Green Hornet".
@@ -72,6 +74,46 @@ B. Install manually from npm:
 ```sh
 npm install --save discord.js sequelize fs
 ```
+
+### Set Config File Values
+
+#### Config.json
+
+The `config.json` file holds most values you will need to set.
+
+The most important value to edit is the `token` value, which is how the bot 
+authenticates on your Discord Server. This should be set to the token value 
+acquired earlier from Discord.
+
+The `prefix` value is a special character that must be placed immediately 
+before a command. This can be set to anything you want, or even made blank.
+
+The `emojis` is a list of **all** emojis that the bot will watch reactions for.
+
+Note: The commands themselves will each have a list of emojis to respond to, but if 
+the command's emoji isn't on this list, it will not trigger.
+
+#### Commands
+
+The `commands` directory contains each command. 
+
+Each command can be activated by either: 
+1. The user typing a command or its aliases with a prefix in their post. 
+2. Any user can react to a post with predetermined emojis. 
+
+Each command features a "cool down", which requires that a user wait a certain 
+number of seconds before using a command again. This prevents users from 
+flooding the bot with requests.
+
+Feel free to change these commands by doing any of the following:
+- Rename the command file (it's filename acts as the main command name).
+- Edit the `aliases` list to whatever is preferable.
+- Edit the `emojis` list to whatever is preferable.
+- Edit the `cooldown` value to the number of seconds a user must wait before 
+being able to use the command again.
+
+You can also add your own commands into this directory to have them picked up 
+when the bot is restarted.
 
 ### Run Application for Testing/Develpoment
 
