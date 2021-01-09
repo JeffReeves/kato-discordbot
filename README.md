@@ -51,20 +51,26 @@ v14.15.3
 
 ### Install Dependencies
 
-This application is built on top of the 
-[Discord.js Library](https://discord.js.org/).
+This application is built on top of:
 
-In order to use this library you must either install it from the package.json 
-file or manually from npm.
+- [Discord.js Library](https://discord.js.org/)
+
+- [Sequelize](https://sequelize.org/)
+
+- [fs](https://nodejs.dev/learn/the-nodejs-fs-module)
+
+In order to use these libraries you must either install them from the 
+package.json file or manually from npm.
 
 A. Install from package.json:
 ```sh
+cd <project-directory>
 npm install
 ```
 
 B. Install manually from npm:
 ```sh
-npm install discordjs
+npm install --save discord.js sequelize fs
 ```
 
 ### Run Application for Testing/Develpoment
@@ -98,9 +104,30 @@ I highly recommend running this app using a process manager like PM2.
 For instructions on how to install and use PM2, please see this guide:
 [PM2](https://pm2.keymetrics.io/)
 
-To start the app with PM2:
+After PM2 is installed, edit the `config.json` file and set the `token` value:
+
+```json
+"token": "<OAuth2_token_goes_here>"
+```
+
+Then start the app with PM2:
+
 ```sh
-token='<OAuth2_token_goes_here>' pm2 start index.js
+cd <directory-above-project>
+pm2 start <project-directory>
+```
+
+Alternatively, start the app with PM2 inside the project directory:
+
+```sh
+cd <project-directory>
+pm2 start index.js
+```
+
+Monitoring of the app can be done with:
+
+```sh
+pm2 monit
 ```
 
 ## LICENSE
