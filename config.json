@@ -6,14 +6,18 @@
 	"command": {
 		"prefix": "!",
 		"emojis": ["💾", "📎", "📌", "🤖"],
-		"archive": [
-			{ "from": "general",    
-			  "to":   "archive" 
-			},
-			{ "from": "kato-share", 
-			  "to":   "kato-archive"
-			}
-		]
+		"archive":  {
+			"channels": [
+				{ 
+					"from": "general",    
+					"to":   "archive" 
+				},
+				{ 
+					"from": "kato-share", 
+					"to":   "kato-archive"
+				}
+			]
+		}
 	},
 	"db": {
 		"name": "kato"
