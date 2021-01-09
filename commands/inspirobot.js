@@ -5,7 +5,7 @@ module.exports = {
     name: 'inspirobot',
     aliases: ['inspiro', 'quote', 'ib'],
     emojis: ['🤖'],
-    cooldown: 30,
+    cooldown: 1,
 	description: 'Gets a random quote from inspirobot.me',
 	execute(message, client){
 
