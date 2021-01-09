@@ -7,7 +7,7 @@ module.exports = {
     name: 'archive',
     aliases: ['share', 'save'],
     emojis: ['📎', '💾', '📌'],
-    cooldown: 30,
+    cooldown: 10,
 	description: 'Clones a message and makes a custom embed in another channel',
 	execute(message, client){
 
