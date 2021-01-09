@@ -5,7 +5,15 @@
 	},
 	"command": {
 		"prefix": "!",
-		"emojis": ["💾", "📎", "📌", "🤖"]
+		"emojis": ["💾", "📎", "📌", "🤖"],
+		"archive": [
+			{ "from": "general",    
+			  "to":   "archive" 
+			},
+			{ "from": "kato-share", 
+			  "to":   "kato-archive"
+			}
+		]
 	},
 	"db": {
 		"name": "kato"
