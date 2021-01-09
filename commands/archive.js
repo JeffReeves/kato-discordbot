@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const config  = require('../config.json');
+const prefix  = config.command.prefix;
 const archive = config.command.archive;
 
 module.exports = {
