@@ -18,8 +18,7 @@ Art by Aaron Campbell / Dynamite Entertainment.
 By Source ([WP:NFCC#4](//en.wikipedia.org/wiki/Wikipedia:Non-free_content_criteria#4) "Wikipedia:Non-free content criteria"), 
 [Fair use](https://en.wikipedia.org/w/index.php?curid=54602393 "Fair use of copyrighted material in the context of Kato (The Green Hornet)")
 
-
-## How to Use
+## How to Setup
 
 ### Create a Discord Bot and Get its OAuth2 Token
 
@@ -171,6 +170,48 @@ Monitoring of the app can be done with:
 ```sh
 pm2 monit
 ```
+
+## How to Use
+
+Each of these commands will include information on how to use them based on 
+their default configuration.
+
+### Archive
+
+Archive will make a copy of a user's post and any URLs it contains and then 
+post an embed of the original post and separate posts for each URL (so that 
+they each get an auto-generated embed).
+
+The `config.json` file contains a list of channels to archive `from` and `to`.<br>
+The command only works on the channels that match the `from` values 
+(the default is `#general` to `#archive`).
+
+Note: The `from` and `to` values are case-sensitive.
+
+Trigger:
+> !archive
+
+Aliases:
+> !share !save
+
+Emojis:
+> 📎 💾 📌
+
+### Inspirobot
+
+[Inspirobot](https://inspirobot.me/) is a funny (and sometimes vulgar) bot 
+that generates random images with random made up quotes.
+
+If a user uses this command it will post a new embed into a channel named: `#inspirobot`
+
+Trigger:
+> !inspirobot
+
+Aliases:
+> !inspiro !quote !ib
+
+Emojis:
+> 🤖
 
 ## LICENSE
 
