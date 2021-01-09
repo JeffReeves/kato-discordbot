@@ -11,8 +11,6 @@ module.exports = {
 	description: 'Clones a message and makes a custom embed in another channel',
 	execute(message, client){
 
-        console.debug('[DEBUG] Trying to archive...');
-
         // skip if the channel is NOT in the archive's "from" list
         if(!archive.channels.some(channel => channel['from'] === message.channel.name)){
             console.debug(`[DEBUG] Channel name ${message.channel.name} is NOT included in ${archive.channels}`);
