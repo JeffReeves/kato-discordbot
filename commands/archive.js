@@ -18,7 +18,7 @@ module.exports = {
         }
 
         // get details of the message and author
-        const content       = message.content.trim();
+        let   content       = message.content.trim();
         const author        = message.author.username;
         const authorAvatar  = message.author.displayAvatarURL();
         const authorURL     = message.url;
@@ -30,11 +30,12 @@ module.exports = {
 
         // strip out all prefix and command (ex.`!share`) from the message
         for(let command of commands){
-            message.content = message.content.replace(prefix + command, '');
+            content = content.replace(prefix + command, '');
         }
 
         // regex for finding URLs
-        var regexURL = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/, 'gi'); // see: http://urlregex.com/
+        //let regexURL = new RegExp(/(https?|ftp):\/\/(-\.)?([^\s/?\.#-]+\.?)+(\/[^\s]*)?/, 'gi'); // see: @imme_emosol https://mathiasbynens.be/demo/url-regex
+        let regexURL = new RegExp(/(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?/, 'gi'); // Diego Perini, MIT, https://gist.github.com/dperini/729294
 
         // check if any URLs are present in the content, and save them to an array
         let URLs = null;
