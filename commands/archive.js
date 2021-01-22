@@ -39,6 +39,21 @@ module.exports = {
         console.debug('[DEBUG HOTFIX 1] custom emotes found:');
         console.debug(customEmotes);
 
+        // if customEmotes are present, strip out the shortcodes (':name:')
+        const regexEmoteShortcode = new RegExp(/<(:.*?:)[0-9]+>/, 'i');
+        if(customEmotes){
+            for(let customEmote of customEmotes){
+                let customShortcode = customEmote.match(regexEmoteShortcode)[1];
+                console.debug('[DEBUG HOTFIX 2] custom shortcode:');
+                console.debug(customShortcode);
+            }
+        }
+
+        // // replace all custom emotes with just normal shortcodes
+        // for(let emote of customEmotes){
+        //     message.content = message.content.replace(emote, '');
+        // }
+
         // strip out all prefix and command (ex.`!share`) from the message
         for(let command of commands){
             message.content = message.content.replace(prefix + command, '');
