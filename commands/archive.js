@@ -82,6 +82,8 @@ module.exports = {
         let URLs = null;
         if(content.match(regexURL)) {
             URLs = content.match(regexURL);
+            console.debug('[HOTFIX DEBUG] Matched URLs:')
+            console.debug(URLs);
         }
 
         // get the "to" channel value
