@@ -32,6 +32,13 @@ module.exports = {
         console.debug('[DEBUG HOTFIX] Message content: ');
         console.debug(content);
 
+        // check for any custom emotes
+        // they are in the format '<:custom_name:18-digit-numbers>'
+        const regexCustomEmote = new RegExp(/<(:.*?:)[0-9]+>/, 'gi');
+        let customEmotes = message.content.match(regexCustomEmote);
+        console.debug('[DEBUG HOTFIX 1] custom emotes found:');
+        console.debug(customEmotes);
+
         // strip out all prefix and command (ex.`!share`) from the message
         for(let command of commands){
             message.content = message.content.replace(prefix + command, '');
