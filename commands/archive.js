@@ -28,47 +28,6 @@ module.exports = {
         let commands = Array.from(this.aliases);
         commands.unshift(this.name);
 
-        // [HOTFIX] custom emotes break embeds
-        console.debug('[DEBUG HOTFIX] Message content: ');
-        console.debug(content);
-
-        // check for any custom emotes
-        // they are in the format '<:custom_name:18-digit-numbers>'
-        const regexCustomEmote = new RegExp(/<(:.*?:)[0-9]+>/, 'gi');
-        let customEmotes = content.match(regexCustomEmote);
-        console.debug('[DEBUG HOTFIX 1] custom emotes found:');
-        console.debug(customEmotes);
-
-        // if customEmotes are present, strip out the shortcodes (':name:')
-        const regexEmoteShortcode = new RegExp(/<(:.*?:)([0-9]+)>/, 'i');
-        if(customEmotes){
-            for(let customEmote of customEmotes){
-                let customEmoteValues = customEmote.match(regexEmoteShortcode);
-                console.debug('[DEBUG HOTFIX 2] custom emote values:');
-                console.debug(customEmoteValues);
-                let customShortcode   = customEmoteValues[1];
-                let customNumber      = customEmoteValues[2];
-                console.debug('[DEBUG HOTFIX 2] custom shortcode and number:');
-                console.debug(customShortcode);
-                console.debug(customNumber);
-
-                // fetch each custom emote
-                let customEmoji = client.emojis.cache.get(customNumber);
-                console.debug('[DEBUG HOTFIX 2] Custom emoji:');
-                console.debug(customEmoji);
-                console.debug(customEmoji.toString());
-
-                // replace custom emotes with their shortcodes
-                //content = content.replace(customEmote, customShortcode);
-                
-                // replace custom emotes with the custom emoji
-                //content = content.replace(customEmote, customEmoji);
-            }
-
-            // console.debug('[DEBUG HOTFIX 3] Message content after replacement: ');
-            // console.debug(content);
-        }
-
         // strip out all prefix and command (ex.`!share`) from the message
         for(let command of commands){
             content = content.replace(prefix + command, '');
@@ -82,8 +41,6 @@ module.exports = {
         let URLs = null;
         if(content.match(regexURL)) {
             URLs = content.match(regexURL);
-            console.debug('[HOTFIX DEBUG] Matched URLs:')
-            console.debug(URLs);
         }
 
         // get the "to" channel value
