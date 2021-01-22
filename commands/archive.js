@@ -28,6 +28,10 @@ module.exports = {
         let commands = Array.from(this.aliases);
         commands.unshift(this.name);
 
+        // [HOTFIX] custom emotes break embeds
+        console.debug('[DEBUG HOTFIX] Message content: ');
+        console.debug(content);
+
         // strip out all prefix and command (ex.`!share`) from the message
         for(let command of commands){
             message.content = message.content.replace(prefix + command, '');
