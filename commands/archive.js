@@ -40,15 +40,26 @@ module.exports = {
         console.debug(customEmotes);
 
         // if customEmotes are present, strip out the shortcodes (':name:')
-        const regexEmoteShortcode = new RegExp(/<(:.*?:)[0-9]+>/, 'i');
+        const regexEmoteShortcode = new RegExp(/<(:.*?:)([0-9])+>/, 'i');
         if(customEmotes){
             for(let customEmote of customEmotes){
-                let customShortcode = customEmote.match(regexEmoteShortcode)[1];
-                console.debug('[DEBUG HOTFIX 2] custom shortcode:');
+                let customEmoteValues = customEmote.match(regexEmoteShortcode);
+                let customShortcode   = customEmoteValues[1];
+                let customNumber      = customEmoteValues[2];
+                console.debug('[DEBUG HOTFIX 2] custom shortcode and number:');
                 console.debug(customShortcode);
+                console.debug(customNumber);
+
+                // fetch each custom emote
+                let customEmoji = client.emojis.cache.get(customNumber);
+                console.debug('[DEBUG HOTFIX 2] Custom emoji:');
+                console.debug(customEmoji);
 
                 // replace custom emotes with their shortcodes
-                content = content.replace(customEmote, customShortcode);
+                //content = content.replace(customEmote, customShortcode);
+                
+                // replace custom emotes with the custom emoji
+                content = content.replace(customEmote, customEmoji);
             }
 
             console.debug('[DEBUG HOTFIX 3] Message content after replacement: ');
