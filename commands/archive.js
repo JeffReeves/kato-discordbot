@@ -18,7 +18,7 @@ module.exports = {
         }
 
         // get details of the message and author
-        const content       = message.content.trim();
+        let   content       = message.content.trim();
         const author        = message.author.username;
         const authorAvatar  = message.author.displayAvatarURL();
         const authorURL     = message.url;
