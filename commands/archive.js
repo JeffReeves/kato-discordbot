@@ -62,11 +62,11 @@ module.exports = {
                 //content = content.replace(customEmote, customShortcode);
                 
                 // replace custom emotes with the custom emoji
-                content = content.replace(customEmote, customEmoji);
+                //content = content.replace(customEmote, customEmoji);
             }
 
-            console.debug('[DEBUG HOTFIX 3] Message content after replacement: ');
-            console.debug(content);
+            // console.debug('[DEBUG HOTFIX 3] Message content after replacement: ');
+            // console.debug(content);
         }
 
         // strip out all prefix and command (ex.`!share`) from the message
@@ -75,7 +75,8 @@ module.exports = {
         }
 
         // regex for finding URLs
-        var regexURL = new RegExp(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/, 'gi'); // see: http://urlregex.com/
+        //let regexURL = new RegExp(/(https?|ftp):\/\/(-\.)?([^\s/?\.#-]+\.?)+(\/[^\s]*)?/, 'gi'); // see: @imme_emosol https://mathiasbynens.be/demo/url-regex
+        let regexURL = new RegExp(/(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?/, 'gi'); // Diego Perini, MIT, https://gist.github.com/dperini/729294
 
         // check if any URLs are present in the content, and save them to an array
         let URLs = null;
@@ -126,43 +127,43 @@ module.exports = {
             .setTimestamp()
             .setFooter(`Shared by: ${author}`, authorAvatar);
 
-        // // verify there are attachments in the message
-        // if(attachments){
+        // verify there are attachments in the message
+        if(attachments){
 
-        //     // general purpose function for human readible file sizes
-        //     // see: https://stackoverflow.com/a/61505697
-        //     const hFileSize = function(bytes, si=false){
-        //         let u, b=bytes, t= si ? 1000 : 1024;     
-        //         ['', si?'k':'K', ...'MGTPEZY'].find(x=> (u=x, b/=t, b**2<1));
-        //         return `${u ? (t*b).toFixed(1) : bytes} ${u}${!si && u ? 'i':''}B`;    
-        //     };
+            // general purpose function for human readible file sizes
+            // see: https://stackoverflow.com/a/61505697
+            const hFileSize = function(bytes, si=false){
+                let u, b=bytes, t= si ? 1000 : 1024;     
+                ['', si?'k':'K', ...'MGTPEZY'].find(x=> (u=x, b/=t, b**2<1));
+                return `${u ? (t*b).toFixed(1) : bytes} ${u}${!si && u ? 'i':''}B`;    
+            };
 
-        //     // iterate over each attachment
-        //     attachments.forEach((attachment) => {
+            // iterate over each attachment
+            attachments.forEach((attachment) => {
 
-        //         // set the thumbnail of the embed to the URL of any image
-        //         if(attachment.url.match(/.(jpg|jpeg|png|gif|bmp|ico)$/i)){
-        //             //archiveEmbed.setThumbnail(attachment.url);
-        //             archiveEmbed.setImage(attachment.url);
-        //         }
-        //         else {
+                // set the thumbnail of the embed to the URL of any image
+                if(attachment.url.match(/.(jpg|jpeg|png|gif|bmp|ico)$/i)){
+                    //archiveEmbed.setThumbnail(attachment.url);
+                    archiveEmbed.setImage(attachment.url);
+                }
+                else {
 
-        //             // get filesize in human readible format
-        //             const fileSize = hFileSize(attachment.size);
+                    // get filesize in human readible format
+                    const fileSize = hFileSize(attachment.size);
 
-        //             // add a link to each file
-        //             archiveEmbed.addFields({
-        //                 name: 'Attachment', 
-        //                 value: `[${attachment.name}](${attachment.url}) \`${fileSize}\``
-        //             });
-        //         }
-        //     });
-        // }
+                    // add a link to each file
+                    archiveEmbed.addFields({
+                        name: 'Attachment', 
+                        value: `[${attachment.name}](${attachment.url}) \`${fileSize}\``
+                    });
+                }
+            });
+        }
 
-        // // set URL if one was found
-        // if(URLs){
-        //     archiveEmbed.setURL(URLs[0]);
-        // }
+        // set URL if one was found
+        if(URLs){
+            archiveEmbed.setURL(URLs[0]);
+        }
 
         // add link back to original post
         archiveEmbed.addFields({ 
@@ -173,16 +174,16 @@ module.exports = {
         // send embed of the share
         archiveChannel.send(archiveEmbed);
 
-        // // create additional embeds for any/all URLs in message content
-        // if(URLs){
-        //     // get total number of URLs
-        //     const numURLs = URLs.length;
-        //     // send each URL as a separate post
-        //     URLs.forEach((URL, index) => {
-        //         archiveChannel.send(`\`[URL ${index + 1}/${numURLs}]\` ${URL}`);
-        //     });
-        //     // to send all URLs in a single post
-        //     //archiveChannel.send(URLs.join('\n'));
-        // }
+        // create additional embeds for any/all URLs in message content
+        if(URLs){
+            // get total number of URLs
+            const numURLs = URLs.length;
+            // send each URL as a separate post
+            URLs.forEach((URL, index) => {
+                archiveChannel.send(`\`[URL ${index + 1}/${numURLs}]\` ${URL}`);
+            });
+            // to send all URLs in a single post
+            //archiveChannel.send(URLs.join('\n'));
+        }
     }
 };
