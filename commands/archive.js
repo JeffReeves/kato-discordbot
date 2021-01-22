@@ -40,7 +40,7 @@ module.exports = {
         console.debug(customEmotes);
 
         // if customEmotes are present, strip out the shortcodes (':name:')
-        const regexEmoteShortcode = new RegExp(/<(:.*?:)([0-9])+>/, 'i');
+        const regexEmoteShortcode = new RegExp(/<(:.*?:)([0-9]+)>/, 'i');
         if(customEmotes){
             for(let customEmote of customEmotes){
                 let customEmoteValues = customEmote.match(regexEmoteShortcode);
