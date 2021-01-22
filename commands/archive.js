@@ -56,6 +56,7 @@ module.exports = {
                 let customEmoji = client.emojis.cache.get(customNumber);
                 console.debug('[DEBUG HOTFIX 2] Custom emoji:');
                 console.debug(customEmoji);
+                console.debug(customEmoji.toString());
 
                 // replace custom emotes with their shortcodes
                 //content = content.replace(customEmote, customShortcode);
