@@ -178,9 +178,9 @@ module.exports = {
             // get total number of URLs
             const numURLs = URLs.length;
             // send each URL as a separate post
-            URLs.forEach((URL, index) => {
-                archiveChannel.send(`\`[URL ${index + 1}/${numURLs}]\` ${URL}`);
-            });
+            // URLs.forEach((URL, index) => {
+            //     archiveChannel.send(`\`[URL ${index + 1}/${numURLs}]\` ${URL}`);
+            // });
             // to send all URLs in a single post
             //archiveChannel.send(URLs.join('\n'));
         }
