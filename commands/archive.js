@@ -44,6 +44,8 @@ module.exports = {
         if(customEmotes){
             for(let customEmote of customEmotes){
                 let customEmoteValues = customEmote.match(regexEmoteShortcode);
+                console.debug('[DEBUG HOTFIX 2] custom emote values:');
+                console.debug(customEmoteValues);
                 let customShortcode   = customEmoteValues[1];
                 let customNumber      = customEmoteValues[2];
                 console.debug('[DEBUG HOTFIX 2] custom shortcode and number:');
