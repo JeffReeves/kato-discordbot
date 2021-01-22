@@ -35,7 +35,7 @@ module.exports = {
         // check for any custom emotes
         // they are in the format '<:custom_name:18-digit-numbers>'
         const regexCustomEmote = new RegExp(/<(:.*?:)[0-9]+>/, 'gi');
-        let customEmotes = message.content.match(regexCustomEmote);
+        let customEmotes = content.match(regexCustomEmote);
         console.debug('[DEBUG HOTFIX 1] custom emotes found:');
         console.debug(customEmotes);
 
@@ -46,17 +46,18 @@ module.exports = {
                 let customShortcode = customEmote.match(regexEmoteShortcode)[1];
                 console.debug('[DEBUG HOTFIX 2] custom shortcode:');
                 console.debug(customShortcode);
-            }
-        }
 
-        // // replace all custom emotes with just normal shortcodes
-        // for(let emote of customEmotes){
-        //     message.content = message.content.replace(emote, '');
-        // }
+                // replace custom emotes with their shortcodes
+                content = content.replace(customEmote, customShortcode);
+            }
+
+            console.debug('[DEBUG HOTFIX 3] Message content after replacement: ');
+            console.debug(content);
+        }
 
         // strip out all prefix and command (ex.`!share`) from the message
         for(let command of commands){
-            message.content = message.content.replace(prefix + command, '');
+            content = content.replace(prefix + command, '');
         }
 
         // regex for finding URLs
