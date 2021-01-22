@@ -159,10 +159,10 @@ module.exports = {
         //     });
         // }
 
-        // set URL if one was found
-        if(URLs){
-            archiveEmbed.setURL(URLs[0]);
-        }
+        // // set URL if one was found
+        // if(URLs){
+        //     archiveEmbed.setURL(URLs[0]);
+        // }
 
         // add link back to original post
         archiveEmbed.addFields({ 
@@ -173,16 +173,16 @@ module.exports = {
         // send embed of the share
         archiveChannel.send(archiveEmbed);
 
-        // create additional embeds for any/all URLs in message content
-        if(URLs){
-            // get total number of URLs
-            const numURLs = URLs.length;
-            // send each URL as a separate post
-            URLs.forEach((URL, index) => {
-                archiveChannel.send(`\`[URL ${index + 1}/${numURLs}]\` ${URL}`);
-            });
-            // to send all URLs in a single post
-            //archiveChannel.send(URLs.join('\n'));
-        }
+        // // create additional embeds for any/all URLs in message content
+        // if(URLs){
+        //     // get total number of URLs
+        //     const numURLs = URLs.length;
+        //     // send each URL as a separate post
+        //     URLs.forEach((URL, index) => {
+        //         archiveChannel.send(`\`[URL ${index + 1}/${numURLs}]\` ${URL}`);
+        //     });
+        //     // to send all URLs in a single post
+        //     //archiveChannel.send(URLs.join('\n'));
+        // }
     }
 };
